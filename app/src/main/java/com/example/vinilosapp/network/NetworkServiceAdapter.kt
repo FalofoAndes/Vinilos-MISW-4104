@@ -1,61 +1,76 @@
-package com.example.vinilosapp.network
+package com.example.vinyls_jetpack_application.network
 
 import android.content.Context
-import android.util.Log
 import com.android.volley.Request
 import com.android.volley.RequestQueue
 import com.android.volley.Response
 import com.android.volley.VolleyError
-import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
-import com.example.vinilosapp.models.Collector
+import com.example.vinilosapp.models.Album
 import org.json.JSONArray
-import org.json.JSONException
 import org.json.JSONObject
-import kotlin.coroutines.resume
-import kotlin.coroutines.resumeWithException
-import kotlin.coroutines.suspendCoroutine
 
-class NetworkServiceAdapter(context: Context) {
-    companion object{
-        const val BASE_URL= "https://backvynils-q6yc.onrender.com/"
-        var instance: NetworkServiceAdapter? = null
+class NetworkServiceAdapter private constructor(context: Context) {
+
+    companion object {
+        private const val BASE_URL = "https://backvynils-q6yc.onrender.com/"
+        @Volatile
+        private var instance: NetworkServiceAdapter? = null
+
         fun getInstance(context: Context) =
             instance ?: synchronized(this) {
-                instance ?: NetworkServiceAdapter(context).also {
-                    instance = it
-                }
+                instance ?: NetworkServiceAdapter(context).also { instance = it }
             }
     }
+
     private val requestQueue: RequestQueue by lazy {
-        // applicationContext keeps you from leaking the Activity or BroadcastReceiver if someone passes one in.
         Volley.newRequestQueue(context.applicationContext)
     }
-    suspend fun getCollectors() = suspendCoroutine<List<Collector>>{ cont->
-        requestQueue.add(getRequest("collectors",
+
+    fun getAlbums(onComplete: (List<Album>) -> Unit, onError: (error: VolleyError) -> Unit) {
+        requestQueue.add(getRequest("albums",
             { response ->
                 val resp = JSONArray(response)
-                val list = mutableListOf<Collector>()
+                val list = mutableListOf<Album>()
                 for (i in 0 until resp.length()) {
                     val item = resp.getJSONObject(i)
-                    val collector = Collector(collectorId = item.getInt("id"),name = item.getString("name"), telephone = item.getString("telephone"), email = item.getString("email"))
-                    list.add(collector)
+                    list.add(Album(
+                        albumId = item.getInt("id"),
+                        name = item.getString("name"),
+                        cover = item.getString("cover"),
+                        recordLabel = item.getString("recordLabel"),
+                        releaseDate = item.getString("releaseDate"),
+                        genre = item.getString("genre"),
+                        description = item.getString("description")
+                    ))
                 }
-                cont.resume(list)
+                onComplete(list)
             },
-            {
-                cont.resumeWithException(it)
-                Log.d("Get Collectors Error", it.message.toString())
-            }))
+            { error -> onError(error) } // Simplified lambda usage
+        ))
     }
-    private fun getRequest(path:String, responseListener: (String) -> Unit, errorListener: Response.ErrorListener): StringRequest {
-        return StringRequest(Request.Method.GET, BASE_URL+path, responseListener,errorListener)
+
+    fun getAlbumDetail(albumId: Int, onComplete: (Album) -> Unit, onError: (error: VolleyError) -> Unit) {
+        requestQueue.add(getRequest("albums/$albumId",
+            { response ->
+                val item = JSONObject(response)
+                val album = Album(
+                    albumId = item.getInt("id"),
+                    name = item.getString("name"),
+                    cover = item.getString("cover"),
+                    recordLabel = item.getString("recordLabel"),
+                    releaseDate = item.getString("releaseDate"),
+                    genre = item.getString("genre"),
+                    description = item.getString("description")
+                )
+                onComplete(album)
+            },
+            { error -> onError(error) } // Simplified lambda usage
+        ))
     }
-    private fun postRequest(path: String, body: JSONObject, responseListener: Response.Listener<JSONObject>, errorListener: Response.ErrorListener ):JsonObjectRequest{
-        return  JsonObjectRequest(Request.Method.POST, BASE_URL+path, body, responseListener, errorListener)
-    }
-    private fun putRequest(path: String, body: JSONObject,  responseListener: Response.Listener<JSONObject>, errorListener: Response.ErrorListener ):JsonObjectRequest{
-        return  JsonObjectRequest(Request.Method.PUT, BASE_URL+path, body, responseListener, errorListener)
+
+    private fun getRequest(path: String, responseListener: Response.Listener<String>, errorListener: Response.ErrorListener): StringRequest {
+        return StringRequest(Request.Method.GET, BASE_URL + path, responseListener, errorListener)
     }
 }

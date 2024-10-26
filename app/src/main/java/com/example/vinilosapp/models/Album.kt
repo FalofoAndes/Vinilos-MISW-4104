@@ -1,6 +1,6 @@
 package com.example.vinilosapp.models
 
-data class Collector (
+data class Album (
     var collectorId: Int? = null,
     var name:String? = null,
     var telephone:String? = null,
