@@ -1,9 +1,10 @@
-package com.example.vinyls_jetpack_application.viewmodels
+package com.example.vinilos_app.viewmodels
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.vinyls_jetpack_application.models.Album
+import com.example.vinilos_app.models.Album
+import com.example.vinilos_app.repository.AlbumRepository
 
 class AlbumCatalogViewModel(private val repository: AlbumRepository) : ViewModel() {
 

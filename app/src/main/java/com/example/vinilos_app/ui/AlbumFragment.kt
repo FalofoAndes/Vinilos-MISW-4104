@@ -1,4 +1,4 @@
-package com.example.vinyls_jetpack_application.ui
+package com.example.vinilos_app.ui
 
 import android.os.Bundle
 import android.view.View
@@ -9,8 +9,9 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.vinyls_jetpack_application.R
-import com.example.vinyls_jetpack_application.ui.adapter.AlbumAdapter
-import com.example.vinyls_jetpack_application.viewmodels.AlbumCatalogViewModel
+import com.example.vinilos_app.repository.AlbumRepository
+import com.example.vinilos_app.ui.adapter.AlbumAdapter
+import com.example.vinilos_app.viewmodels.AlbumCatalogViewModel
 
 class AlbumFragment : Fragment(R.layout.album_fragment) {
 

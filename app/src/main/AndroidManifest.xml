@@ -13,7 +13,7 @@
         android:theme="@style/Theme.Vinyls_Jetpack_Application.NoActionBar">
 
         <activity
-            android:name=".ui.MainActivity"
+            android:name="com.example.vinilos_app.ui.MainActivity"
             android:exported="true"
             android:theme="@style/Theme.Vinyls_Jetpack_Application.NoActionBar">
             <intent-filter>

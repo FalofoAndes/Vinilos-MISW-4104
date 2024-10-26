@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/homeFragment"
-        android:name="com.example.vinyls_jetpack_application.ui.HomeFragment"
+        android:name="com.example.vinilos_app.ui.HomeFragment"
         android:label="fragment_home"
         tools:layout="@layout/home" >
         <action
@@ -17,7 +17,7 @@
 
     <fragment
         android:id="@+id/albumFragment"
-        android:name="com.example.vinyls_jetpack_application.ui.AlbumFragment"
+        android:name="com.example.vinilos_app.ui.AlbumFragment"
         android:label="fragment_album"
         tools:layout="@layout/album_fragment" />
 </navigation>

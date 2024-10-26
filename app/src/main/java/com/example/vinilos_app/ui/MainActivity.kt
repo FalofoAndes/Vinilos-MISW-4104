@@ -1,4 +1,4 @@
-package com.example.vinyls_jetpack_application.ui
+package com.example.vinilos_app.ui
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity

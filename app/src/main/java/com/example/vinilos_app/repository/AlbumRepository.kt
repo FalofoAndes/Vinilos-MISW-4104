@@ -1,9 +1,9 @@
-package com.example.vinyls_jetpack_application.repository
+package com.example.vinilos_app.repository
 
 import android.content.Context
 import com.android.volley.VolleyError
-import com.example.vinyls_jetpack_application.models.Album
-import com.example.vinyls_jetpack_application.network.NetworkServiceAdapter
+import com.example.vinilos_app.models.Album
+import com.example.vinilos_app.network.NetworkServiceAdapter
 
 class AlbumRepository(private val context: Context) {
 

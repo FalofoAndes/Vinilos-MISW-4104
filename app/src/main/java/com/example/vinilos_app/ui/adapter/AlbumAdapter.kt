@@ -1,9 +1,9 @@
-package com.example.vinyls_jetpack_application.ui.adapter
+package com.example.vinilos_app.ui.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.vinyls_jetpack_application.models.Album
+import com.example.vinilos_app.models.Album
 import com.example.vinyls_jetpack_application.databinding.AlbumItemBinding
 
 
