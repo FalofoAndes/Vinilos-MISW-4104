@@ -1,4 +1,4 @@
-package com.example.vinyls_jetpack_application.network
+package com.example.vinilos_app.network
 
 import android.content.Context
 import com.android.volley.Request
@@ -9,7 +9,7 @@ import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import org.json.JSONArray
 import org.json.JSONObject
-import com.example.vinyls_jetpack_application.models.Album
+import com.example.vinilos_app.models.Album
 
 class NetworkServiceAdapter private constructor(context: Context) {
 
@@ -35,7 +35,8 @@ class NetworkServiceAdapter private constructor(context: Context) {
                 val list = mutableListOf<Album>()
                 for (i in 0 until resp.length()) {
                     val item = resp.getJSONObject(i)
-                    list.add(Album(
+                    list.add(
+                        Album(
                         albumId = item.getInt("id"),
                         name = item.getString("name"),
                         cover = item.getString("cover"),
@@ -43,7 +44,8 @@ class NetworkServiceAdapter private constructor(context: Context) {
                         releaseDate = item.getString("releaseDate"),
                         genre = item.getString("genre"),
                         description = item.getString("description")
-                    ))
+                    )
+                    )
                 }
                 onComplete(list)
             },

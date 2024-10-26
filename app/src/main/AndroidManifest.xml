@@ -12,7 +12,15 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Vinyls_Jetpack_Application.NoActionBar">
 
-
+        <activity
+            android:name="com.example.vinilos_app.ui.MainActivity"
+            android:exported="true"
+            android:theme="@style/Theme.Vinyls_Jetpack_Application.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>
