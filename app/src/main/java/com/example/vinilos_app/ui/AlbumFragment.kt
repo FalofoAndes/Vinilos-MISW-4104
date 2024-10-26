@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.vinyls_jetpack_application.R
 import com.example.vinyls_jetpack_application.ui.adapter.AlbumAdapter
 import com.example.vinyls_jetpack_application.viewmodels.AlbumCatalogViewModel
-import com.example.vinyls_jetpack_application.repository.AlbumRepository
 
 class AlbumFragment : Fragment(R.layout.album_fragment) {
 

@@ -3,9 +3,7 @@ package com.example.vinyls_jetpack_application.viewmodels
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.android.volley.VolleyError
 import com.example.vinyls_jetpack_application.models.Album
-import com.example.vinyls_jetpack_application.repository.AlbumRepository
 
 class AlbumCatalogViewModel(private val repository: AlbumRepository) : ViewModel() {
 
