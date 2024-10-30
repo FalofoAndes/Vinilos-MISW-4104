@@ -7,12 +7,15 @@ import com.example.vinilos_app.models.Album
 import com.example.vinyls_jetpack_application.databinding.AlbumItemBinding
 
 
-class AlbumAdapter(private var albums: List<Album>) : RecyclerView.Adapter<AlbumAdapter.AlbumViewHolder>() {
+class AlbumAdapter(private var albums: List<Album>, private val onButtonClick: (Int) -> Unit) : RecyclerView.Adapter<AlbumAdapter.AlbumViewHolder>() {
 
-    class AlbumViewHolder(private val binding: AlbumItemBinding) : RecyclerView.ViewHolder(binding.root) {
+    inner class AlbumViewHolder(private val binding: AlbumItemBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(album: Album) {
             binding.album = album
             binding.executePendingBindings() // Asegurar que los cambios se reflejen en la vista
+            binding.buttonVer.setOnClickListener {
+                onButtonClick(album.albumId) // Llama a la acción del botón
+            }
         }
     }
 
