@@ -63,6 +63,11 @@
                     android:text="@{album.description}" />
             </LinearLayout>
 
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler_view_tracks"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
         </LinearLayout>
 
     </com.google.android.material.card.MaterialCardView>
