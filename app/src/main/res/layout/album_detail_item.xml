@@ -49,7 +49,6 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:adjustViewBounds="true"
-                    android:scaleType="centerCrop"
                     android:maxHeight="200dp"
                     app:imageUrl="@{album.cover}" />
 
