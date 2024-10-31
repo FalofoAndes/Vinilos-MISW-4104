@@ -16,10 +16,6 @@ class AlbumCatalogViewModel(private val repository: AlbumRepository) : ViewModel
     private val _error = MutableLiveData<String>()
     val error: LiveData<String> get() = _error
 
-    // LiveData para el detalle del álbum
-    private val _albumDetail = MutableLiveData<Album?>()
-    val albumDetail: LiveData<Album?> get() = _albumDetail
-
     // Función para cargar el catálogo de álbumes
     fun loadAlbumCatalog() {
         repository.getAlbumCatalog(
@@ -32,22 +28,6 @@ class AlbumCatalogViewModel(private val repository: AlbumRepository) : ViewModel
             },
             onError = { volleyError ->
                 _error.postValue("Error al cargar el catálogo: ${volleyError.message ?: "Error desconocido"}")
-            }
-        )
-    }
-
-    // Función para cargar el detalle de un álbum
-    fun loadAlbumDetail(albumId: Int) {
-        repository.getAlbumDetail(albumId,
-            onComplete = { album ->
-                if (album != null) {
-                    _albumDetail.postValue(album)
-                } else {
-                    _error.postValue("No se encontró el álbum.")
-                }
-            },
-            onError = { volleyError ->
-                _error.postValue("Error al cargar el detalle del álbum: ${volleyError.message ?: "Error desconocido"}")
             }
         )
     }

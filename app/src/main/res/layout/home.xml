@@ -11,27 +11,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <!-- Banner -->
-        <include
-            android:id="@+id/banner"
-            layout="@layout/banner"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
-
-        <!-- Selectores superiores -->
-        <include
-            android:id="@+id/selectors_up"
-            layout="@layout/selectors_up"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            app:layout_constraintTop_toBottomOf="@id/banner"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
-
         <!-- Imagen central -->
         <ImageView
             android:id="@+id/central_image"
@@ -41,7 +20,7 @@
             android:src="@drawable/vinyl_image"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/selectors_up" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <!-- Texto "Acerca de la app" -->
         <TextView
@@ -52,17 +31,6 @@
             android:textSize="18sp"
             android:layout_marginTop="16dp"
             app:layout_constraintTop_toBottomOf="@id/central_image"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
-
-        <!-- Selectores inferiores -->
-        <include
-            android:id="@+id/selectors_down"
-            layout="@layout/selectors_down"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
 

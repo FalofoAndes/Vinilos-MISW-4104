@@ -22,14 +22,6 @@ class HomeFragment : Fragment(R.layout.home) {
         return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        // Navegar a AlbumFragment al hacer clic en el selector "Search"
-        binding.selectorsDown.selectorSearch.setOnClickListener {
-            findNavController().navigate(R.id.action_homeFragment_to_albumFragment)
-        }
-    }
 
     override fun onDestroyView() {
         super.onDestroyView()

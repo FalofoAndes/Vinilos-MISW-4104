@@ -6,8 +6,10 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.vinilos_app.models.Album
 import com.example.vinyls_jetpack_application.R
 import com.example.vinilos_app.repository.AlbumRepository
 import com.example.vinilos_app.ui.adapter.AlbumAdapter
@@ -17,6 +19,7 @@ class AlbumFragment : Fragment(R.layout.album_fragment) {
 
     private lateinit var albumCatalogViewModel: AlbumCatalogViewModel
     private lateinit var adapter: AlbumAdapter
+    private val albumList = listOf<Album>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,7 +37,10 @@ class AlbumFragment : Fragment(R.layout.album_fragment) {
 
         // Setup RecyclerView and Adapter
         val recyclerView = view.findViewById<RecyclerView>(R.id.recycler_view_albums)
-        adapter = AlbumAdapter(emptyList())
+        adapter = AlbumAdapter(albumList) { albumId  ->
+            val action = AlbumFragmentDirections.actionAlbumFragmentToAlbumDetailFragment(albumId)
+            findNavController().navigate(action)
+        }
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
@@ -50,6 +56,7 @@ class AlbumFragment : Fragment(R.layout.album_fragment) {
 
         // Load album catalog
         albumCatalogViewModel.loadAlbumCatalog()
+
     }
 }
 
