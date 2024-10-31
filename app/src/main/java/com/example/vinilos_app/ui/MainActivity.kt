@@ -23,8 +23,22 @@ class MainActivity : AppCompatActivity() {
         val navHostFragment = supportFragmentManager
             .findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         navController = navHostFragment.navController
+
         binding.selectorsUp.selectorAlbums.setOnClickListener {
-            navController.navigate(R.id.action_homeFragment_to_albumFragment)
+            if (navController.currentDestination?.id != R.id.albumFragment) {
+                navController.navigate(R.id.albumFragment)
+            }
+        }
+
+        binding.selectorsDown.selectorHome.setOnClickListener {
+            if (navController.currentDestination?.id != R.id.homeFragment) {
+                navController.navigate(R.id.homeFragment)
+            }
+        }
+
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            binding.selectorsUp.selectorAlbums.isEnabled = destination.id != R.id.albumFragment
+            binding.selectorsDown.selectorHome.isEnabled = destination.id != R.id.homeFragment
         }
     }
 

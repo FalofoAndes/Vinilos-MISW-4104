@@ -10,9 +10,6 @@
         android:name="com.example.vinilos_app.ui.HomeFragment"
         android:label="fragment_home"
         tools:layout="@layout/home" >
-        <action
-            android:id="@+id/action_homeFragment_to_albumFragment"
-            app:destination="@id/albumFragment" />
     </fragment>
 
     <fragment
