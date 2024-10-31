@@ -14,9 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.vinilos_app.models.Album
 import com.example.vinilos_app.repository.AlbumRepository
-import com.example.vinilos_app.ui.adapter.AlbumAdapter
 import com.example.vinilos_app.ui.adapter.AlbumDetailAdapter
-import com.example.vinilos_app.viewmodels.AlbumCatalogViewModel
 import com.example.vinilos_app.viewmodels.AlbumDetailViewModel
 import com.example.vinyls_jetpack_application.R
 
@@ -46,7 +44,7 @@ class AlbumDetailFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_album_detail, container, false)
+        val view = inflater.inflate(R.layout.album_detail_fragment, container, false)
 
         // Recuperar el ID del álbum pasado como argumento
         albumId = arguments?.let { AlbumDetailFragmentArgs.fromBundle(it).idAlbum }
