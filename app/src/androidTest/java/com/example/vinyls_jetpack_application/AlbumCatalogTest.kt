@@ -57,6 +57,25 @@ class AlbumCatalogTest {
             )
     }
 
+    @Test
+    fun verifyAlbumFieldsExistenceInFirstAlbum() {
+        // Navegar al fragmento de álbumes
+        onView(withId(R.id.selector_albums)).perform(click())
+    
+        Thread.sleep(2000)
+    
+        // Verificar que el RecyclerView esté visible
+        onView(withId(R.id.recycler_view_albums)).check(matches(isDisplayed()))
+    
+        // Verificar la existencia de los campos en el primer álbum (posición 0)
+        onView(withId(R.id.recycler_view_albums))
+            .check(matches(atPosition(0, hasDescendant(withId(R.id.album_name)))))
+        onView(withId(R.id.recycler_view_albums))
+            .check(matches(atPosition(0, hasDescendant(withId(R.id.album_release_date)))))
+        onView(withId(R.id.recycler_view_albums))
+            .check(matches(atPosition(0, hasDescendant(withId(R.id.album_description)))))
+    }
+
     // ViewAction personalizado para hacer clic en un subelemento específico dentro de un ViewHolder
     private fun clickChildViewWithId(id: Int): ViewAction {
         return object : ViewAction {
