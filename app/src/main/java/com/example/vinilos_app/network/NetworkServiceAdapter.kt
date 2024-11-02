@@ -38,6 +38,7 @@ class NetworkServiceAdapter private constructor(context: Context) {
     }
 
     fun getAlbums(onComplete: (List<Album>) -> Unit, onError: (error: VolleyError) -> Unit) {
+        EspressoIdlingResource.increment()
         requestQueue.add(getRequest("albums",
             { response ->
                 val resp = JSONArray(response)
@@ -50,19 +51,28 @@ class NetworkServiceAdapter private constructor(context: Context) {
                     )
                 }
                 onComplete(list)
+                EspressoIdlingResource.decrement()
             },
-            { error -> onError(error) } // Simplified lambda usage
+            { error ->
+                onError(error)
+                EspressoIdlingResource.decrement()
+            } // Simplified lambda usage
         ))
     }
 
     fun getAlbumDetail(albumId: Int, onComplete: (Album) -> Unit, onError: (error: VolleyError) -> Unit) {
+        EspressoIdlingResource.increment()
         requestQueue.add(getRequest("albums/$albumId",
             { response ->
                 val item = JSONObject(response)
                 val album = getAlbum(item)
                 onComplete(album)
+                EspressoIdlingResource.decrement()
             },
-            { error -> onError(error) } // Simplified lambda usage
+            { error ->
+                onError(error)
+                EspressoIdlingResource.decrement()
+            } // Simplified lambda usage
         ))
     }
 
