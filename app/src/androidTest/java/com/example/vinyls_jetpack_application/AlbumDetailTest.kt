@@ -134,6 +134,138 @@ class AlbumDetailTest {
 
     }
 
+    @Test
+    fun albumCatalogToAlbumDetail() {
+        val linearLayout = onView(
+            allOf(
+                withId(R.id.selector_albums),
+                withParent(
+                    allOf(
+                        withId(R.id.selectors_up),
+                        withParent(IsInstanceOf.instanceOf(android.view.ViewGroup::class.java))
+                    )
+                ),
+                isDisplayed()
+            )
+        )
+        linearLayout.check(matches(isDisplayed()))
+
+        val linearLayout2 = onView(
+            allOf(
+                withId(R.id.selector_albums),
+                childAtPositionNavegacionCatalogoDetalle(
+                    allOf(
+                        withId(R.id.selectors_up),
+                        childAtPositionNavegacionCatalogoDetalle(
+                            withClassName(`is`("androidx.constraintlayout.widget.ConstraintLayout")),
+                            1
+                        )
+                    ),
+                    1
+                ),
+                isDisplayed()
+            )
+        )
+        linearLayout2.perform(click())
+
+        val recyclerView = onView(
+            allOf(
+                withId(R.id.recycler_view_albums),
+                withParent(withParent(withId(R.id.nav_host_fragment))),
+                isDisplayed()
+            )
+        )
+        recyclerView.check(matches(isDisplayed()))
+
+        val button = onView(
+            allOf(
+                withId(R.id.button_ver), withText("VER"),
+                withParent(withParent(IsInstanceOf.instanceOf(androidx.cardview.widget.CardView::class.java))),
+                isDisplayed()
+            )
+        )
+        button.check(matches(isDisplayed()))
+
+        val materialButton = onView(
+            allOf(
+                withId(R.id.button_ver), withText("Ver"),
+                childAtPosition(
+                    childAtPosition(
+                        withClassName(`is`("com.google.android.material.card.MaterialCardView")),
+                        0
+                    ),
+                    4
+                ),
+                isDisplayed()
+            )
+        )
+        materialButton.perform(click())
+
+        val textView = onView(
+            allOf(
+                withId(R.id.album_name), withText("Buscando América"),
+                withParent(withParent(IsInstanceOf.instanceOf(androidx.cardview.widget.CardView::class.java))),
+                isDisplayed()
+            )
+        )
+        textView.check(matches(isDisplayed()))
+
+        val textView2 = onView(
+            allOf(
+                withId(R.id.album_release_date), withText("1984-08-01T00:00:00.000Z"),
+                withParent(withParent(IsInstanceOf.instanceOf(androidx.cardview.widget.CardView::class.java))),
+                isDisplayed()
+            )
+        )
+        textView2.check(matches(isDisplayed()))
+
+        val imageView = onView(
+            allOf(
+                withId(R.id.album_cover),
+                withParent(withParent(IsInstanceOf.instanceOf(android.widget.LinearLayout::class.java))),
+                isDisplayed()
+            )
+        )
+        imageView.check(matches(isDisplayed()))
+
+        val textView3 = onView(
+            allOf(
+                withId(R.id.album_description),
+                withText("Buscando América es el primer álbum de la banda de Rubén Blades y Seis del Solar lanzado en 1984. La producción, bajo el sello Elektra, fusiona diferentes ritmos musicales tales como la salsa, reggae, rock, y el jazz latino. El disco fue grabado en Eurosound Studios en Nueva York entre mayo y agosto de 1983."),
+                withParent(withParent(IsInstanceOf.instanceOf(android.widget.LinearLayout::class.java))),
+                isDisplayed()
+            )
+        )
+        textView3.check(matches(isDisplayed()))
+
+        val recyclerView2 = onView(
+            allOf(
+                withId(R.id.recycler_view_tracks),
+                withParent(withParent(IsInstanceOf.instanceOf(androidx.cardview.widget.CardView::class.java))),
+                isDisplayed()
+            )
+        )
+        recyclerView2.check(matches(isDisplayed()))
+    }
+
+    private fun childAtPositionNavegacionCatalogoDetalle(
+        parentMatcher: Matcher<View>, position: Int
+    ): Matcher<View> {
+
+        return object : TypeSafeMatcher<View>() {
+            override fun describeTo(description: Description) {
+                description.appendText("Child at position $position in parent ")
+                parentMatcher.describeTo(description)
+            }
+
+            public override fun matchesSafely(view: View): Boolean {
+                val parent = view.parent
+                return parent is ViewGroup && parentMatcher.matches(parent)
+                        && view == parent.getChildAt(position)
+            }
+        }
+    }
+
     private fun childAtPosition(
         parentMatcher: Matcher<View>, position: Int
     ): Matcher<View> {

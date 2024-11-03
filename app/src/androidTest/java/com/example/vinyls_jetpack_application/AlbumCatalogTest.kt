@@ -1,5 +1,6 @@
 package com.example.vinyls_jetpack_application
 import android.view.View
+import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
@@ -20,6 +21,9 @@ import androidx.test.espresso.matcher.BoundedMatcher
 import androidx.test.espresso.matcher.ViewMatchers.isAssignableFrom
 import com.example.vinilos_app.ui.MainActivity
 import org.hamcrest.Matcher
+import org.hamcrest.Matchers.`is`
+import org.hamcrest.TypeSafeMatcher
+import org.hamcrest.core.IsInstanceOf
 
 @LargeTest
 @RunWith(AndroidJUnit4::class)
@@ -76,6 +80,91 @@ class AlbumCatalogTest {
             .check(matches(atPosition(0, hasDescendant(withId(R.id.album_description)))))
     }
 
+    @Test
+    fun retornoPantallaPrincipalTest() {
+        val linearLayout = onView(
+            allOf(
+                withId(R.id.selector_albums),
+                withParent(
+                    allOf(
+                        withId(R.id.selectors_up),
+                        withParent(IsInstanceOf.instanceOf(android.view.ViewGroup::class.java))
+                    )
+                ),
+                isDisplayed()
+            )
+        )
+        linearLayout.check(matches(isDisplayed()))
+
+        val linearLayout2 = onView(
+            allOf(
+                withId(R.id.selector_albums),
+                childAtPositionBackHome(
+                    allOf(
+                        withId(R.id.selectors_up),
+                        childAtPositionBackHome(
+                            withClassName(`is`("androidx.constraintlayout.widget.ConstraintLayout")),
+                            1
+                        )
+                    ),
+                    1
+                ),
+                isDisplayed()
+            )
+        )
+        linearLayout2.perform(click())
+
+        val linearLayout3 = onView(
+            allOf(
+                withId(R.id.selector_home),
+                withParent(
+                    allOf(
+                        withId(R.id.selectors_down),
+                        withParent(IsInstanceOf.instanceOf(android.view.ViewGroup::class.java))
+                    )
+                ),
+                isDisplayed()
+            )
+        )
+        linearLayout3.check(matches(isDisplayed()))
+
+        val linearLayout4 = onView(
+            allOf(
+                withId(R.id.selector_home),
+                childAtPositionBackHome(
+                    allOf(
+                        withId(R.id.selectors_down),
+                        childAtPositionBackHome(
+                            withClassName(`is`("androidx.constraintlayout.widget.ConstraintLayout")),
+                            3
+                        )
+                    ),
+                    0
+                ),
+                isDisplayed()
+            )
+        )
+        linearLayout4.perform(click())
+    }
+
+    private fun childAtPositionBackHome(
+        parentMatcher: Matcher<View>, position: Int
+    ): Matcher<View> {
+
+        return object : TypeSafeMatcher<View>() {
+            override fun describeTo(description: Description) {
+                description.appendText("Child at position $position in parent ")
+                parentMatcher.describeTo(description)
+            }
+
+            public override fun matchesSafely(view: View): Boolean {
+                val parent = view.parent
+                return parent is ViewGroup && parentMatcher.matches(parent)
+                        && view == parent.getChildAt(position)
+            }
+        }
+    }
+
     // ViewAction personalizado para hacer clic en un subelemento específico dentro de un ViewHolder
     private fun clickChildViewWithId(id: Int): ViewAction {
         return object : ViewAction {
@@ -109,6 +198,4 @@ class AlbumCatalogTest {
             }
         }
     }
-
-
 }
