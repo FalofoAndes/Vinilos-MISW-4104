@@ -8,6 +8,7 @@
 - Instalación
 - Configuración del Entorno
 - Pruebas
+- APK 
 
 
 
@@ -46,6 +47,9 @@
 
 ## Pruebas
 1. Ir a la carpeta app/src/androidtest dar clic derecho y seleccionar la opción "Run all tests"
+
+## APK
+El archivo APK está incluido en los archivos de la versión release y su enlace de descarga también está disponible en la sección Inception de la wiki del repositorio.
    
    
 
