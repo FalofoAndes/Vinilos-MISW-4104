@@ -10,6 +10,7 @@ import com.android.volley.toolbox.Volley
 import org.json.JSONArray
 import org.json.JSONObject
 import com.example.vinilos_app.models.Album
+import com.example.vinilos_app.models.Collector
 import com.example.vinilos_app.models.Comment
 import com.example.vinilos_app.models.Performer
 import com.example.vinilos_app.models.Track
@@ -19,6 +20,9 @@ import java.time.format.DateTimeFormatter
 import java.util.Date
 import java.util.Locale
 import java.util.TimeZone
+import kotlin.coroutines.suspendCoroutine
+import kotlin.coroutines.resume
+import kotlin.coroutines.resumeWithException
 
 class NetworkServiceAdapter private constructor(context: Context) {
 
@@ -139,6 +143,42 @@ class NetworkServiceAdapter private constructor(context: Context) {
             performers = performers
         )
         return album
+    }
+
+    suspend fun getCollectors(): List<Collector> = suspendCoroutine { cont ->
+        EspressoIdlingResource.increment()
+
+        requestQueue.add(getRequest("collectors",
+            { response ->
+                try {
+                    val resp = JSONArray(response)
+                    val list = mutableListOf<Collector>()
+                    for (i in 0 until resp.length()) {
+                        val collector = getCollector(resp.getJSONObject(i))
+                        list.add(collector)
+                    }
+                    cont.resume(list) // Resumes with the result
+                } catch (e: Exception) {
+                    cont.resumeWithException(e) // Resumes with exception
+                } finally {
+                    EspressoIdlingResource.decrement()
+                }
+            },
+            { error ->
+                cont.resumeWithException(error) // Resumes with VolleyError
+                EspressoIdlingResource.decrement()
+            }
+        ))
+    }
+
+    private fun getCollector(jsonObject: JSONObject): Collector {
+        val collector = Collector(
+            collectorId = jsonObject.getInt("id"),
+            name = jsonObject.getString("name"),
+            telephone = jsonObject.getString("telephone"),
+            email = jsonObject.getString("email")
+        )
+        return collector
     }
 
     private fun getNullable(

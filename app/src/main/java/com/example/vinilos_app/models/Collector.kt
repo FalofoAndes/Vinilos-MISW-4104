@@ -1,7 +1,8 @@
 package com.example.vinilos_app.models
 
 data class Collector (
+    val collectorId: Int,
     val name:String,
-    val telephone:Long,
+    val telephone:String,
     val email:String
 )
