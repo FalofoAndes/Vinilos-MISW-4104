@@ -15,9 +15,6 @@ import com.example.vinilos_app.models.Comment
 import com.example.vinilos_app.models.Performer
 import com.example.vinilos_app.models.Track
 import java.text.SimpleDateFormat
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
-import java.util.Date
 import java.util.Locale
 import java.util.TimeZone
 import kotlin.coroutines.suspendCoroutine
