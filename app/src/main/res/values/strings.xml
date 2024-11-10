@@ -22,4 +22,18 @@
     <string name="title_comments">Comentarios del álbum</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="icon_description_artists">Icon representing Artists</string>
+    <string name="icon_description_albums">Icon representing Albums</string>
+    <string name="icon_description_collectors">Icon representing Collectors</string>
+
+    <string name="label_artists">Artists</string>
+    <string name="label_albums">Albums</string>
+    <string name="label_collectors">Collectors</string>
+
+    <string name="icon_description_home">Icon representing Home</string>
+    <string name="icon_description_search">Icon representing Search</string>
+
+    <string name="label_home">Home</string>
+    <string name="label_search">Search</string>
+
 </resources>

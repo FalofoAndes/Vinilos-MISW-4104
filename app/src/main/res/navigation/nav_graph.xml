@@ -29,4 +29,21 @@
             android:name="idAlbum"
             app:argType="integer" />
     </fragment>
+
+
+
+    <fragment
+        android:id="@+id/performerFragment"
+        android:name="com.example.vinilos_app.ui.PerformerFragment"
+        android:label="fragment_performer"
+        tools:layout="@layout/performer_fragment" >
+        <action
+            android:id="@+id/action_performerFragment_to_albumDetailFragment"
+            app:destination="@id/albumDetailFragment" />
+
+    </fragment>
+
+
+
+
 </navigation>
