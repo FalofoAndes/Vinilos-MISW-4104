@@ -5,10 +5,7 @@
       <SelectionState runConfigName="app">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
-      <SelectionState runConfigName="AlbumCatalogTest">
-        <option name="selectionMode" value="DROPDOWN" />
-      </SelectionState>
-      <SelectionState runConfigName="AlbumDetailTest">
+      <SelectionState runConfigName="Tests in 'com.example.vinyls_jetpack_application'">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
     </selectionStates>
