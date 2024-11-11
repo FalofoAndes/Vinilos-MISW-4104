@@ -14,6 +14,7 @@ import com.example.vinilos_app.models.Collector
 import com.example.vinilos_app.models.Comment
 import com.example.vinilos_app.models.Performer
 import com.example.vinilos_app.models.Track
+import kotlinx.coroutines.suspendCancellableCoroutine
 import java.text.SimpleDateFormat
 import java.util.Locale
 import java.util.TimeZone
@@ -181,4 +182,38 @@ class NetworkServiceAdapter private constructor(context: Context) {
     private fun getNullable(
         jsonObject: JSONObject, param: String
     ): String = if (jsonObject.has(param)) jsonObject.getString(param) else ""
+
+
+    suspend fun getPerformers(): List<Performer> = suspendCancellableCoroutine { continuation ->
+        EspressoIdlingResource.increment()
+        requestQueue.add(getRequest("musicians",
+            { response ->
+                val resp = JSONArray(response)
+                val list = mutableListOf<Performer>()
+                for (i in 0 until resp.length()) {
+                    val performer = getPerformer(resp.getJSONObject(i))
+                    list.add(performer)
+                }
+                continuation.resume(list) // Retorna la lista en caso de éxito
+                EspressoIdlingResource.decrement()
+            },
+            { error ->
+                continuation.resumeWithException(error) // Lanza una excepción en caso de error
+                EspressoIdlingResource.decrement()
+            }
+        ))
+    }
+
+    private fun getPerformer(jsonObject: JSONObject): Performer {
+        return Performer(
+            id = jsonObject.getInt("id"),
+            name = jsonObject.getString("name"),
+            image = jsonObject.getString("image"),
+            description = jsonObject.getString("description"),
+            birthDate = getNullable(jsonObject, "birthDate"),
+            creationDate = getNullable(jsonObject, "creationDate")
+        )
+    }
+
+
 }

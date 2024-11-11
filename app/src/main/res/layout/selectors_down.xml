@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
@@ -7,47 +8,27 @@
     android:padding="16dp">
 
     <!-- Selector 1: Home -->
-    <LinearLayout
+    <TextView
         android:id="@+id/selector_home"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:orientation="vertical"
-        android:gravity="center">
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/home_icon" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Home"
-            android:layout_marginTop="8dp" />
-
-    </LinearLayout>
+        app:drawableTopCompat="@drawable/home_icon"
+        android:contentDescription="@string/icon_description_home"
+        android:gravity="center"
+        android:text="@string/label_home"
+        android:layout_marginTop="8dp" />
 
     <!-- Selector 2: Search -->
-    <LinearLayout
+    <TextView
         android:id="@+id/selector_search"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:orientation="vertical"
-        android:gravity="center">
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/search_icon" /> <!-- Reemplaza con el icono de Search -->
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Search"
-            android:layout_marginTop="8dp" />
-
-    </LinearLayout>
+        app:drawableTopCompat="@drawable/search_icon"
+        android:contentDescription="@string/icon_description_search"
+        android:gravity="center"
+        android:text="@string/label_search"
+        android:layout_marginTop="8dp" />
 
 </LinearLayout>

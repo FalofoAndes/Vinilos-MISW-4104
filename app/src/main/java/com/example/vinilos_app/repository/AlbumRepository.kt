@@ -3,6 +3,7 @@ package com.example.vinilos_app.repository
 import android.content.Context
 import com.android.volley.VolleyError
 import com.example.vinilos_app.models.Album
+import com.example.vinilos_app.models.Performer
 import com.example.vinilos_app.network.NetworkServiceAdapter
 
 class AlbumRepository(private val context: Context) {
@@ -18,4 +19,6 @@ class AlbumRepository(private val context: Context) {
     fun getAlbumDetail(albumId: Int, onComplete: (Album?) -> Unit, onError: (VolleyError) -> Unit) {
         networkService.getAlbumDetail(albumId, onComplete, onError)
     }
+
+
 }

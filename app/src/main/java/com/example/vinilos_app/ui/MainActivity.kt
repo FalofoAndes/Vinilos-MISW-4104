@@ -29,10 +29,16 @@ class MainActivity : AppCompatActivity() {
                 navController.navigate(R.id.albumFragment)
             }
         }
-
+        
         binding.selectorsUp.selectorCollectors.setOnClickListener {
             if (navController.currentDestination?.id != R.id.collectorsFragment) {
                 navController.navigate(R.id.collectorsFragment)
+            }
+        }
+        
+        binding.selectorsUp.selectorArtists.setOnClickListener{
+            if(navController.currentDestination?.id != R.id.performerFragment){
+                navController.navigate(R.id.performerFragment)
             }
         }
 
