@@ -30,7 +30,12 @@
             app:argType="integer" />
     </fragment>
 
-
+    <fragment
+        android:id="@+id/collectorsFragment"
+        android:name="com.example.vinilos_app.ui.CollectorsFragment"
+        android:label="fragment_collectors"
+        tools:layout="@layout/collectors_fragment" >
+    </fragment>
 
     <fragment
         android:id="@+id/performerFragment"
@@ -40,10 +45,6 @@
         <action
             android:id="@+id/action_performerFragment_to_albumDetailFragment"
             app:destination="@id/albumDetailFragment" />
-
     </fragment>
-
-
-
 
 </navigation>

@@ -5,19 +5,7 @@
       <SelectionState runConfigName="app">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
-      <SelectionState runConfigName="testScrollToLastArtistAndCheckDetails()">
-        <option name="selectionMode" value="DROPDOWN" />
-      </SelectionState>
-      <SelectionState runConfigName="PerformerCatalogTest">
-        <option name="selectionMode" value="DROPDOWN" />
-      </SelectionState>
-      <SelectionState runConfigName="performersSortedByname()">
-        <option name="selectionMode" value="DROPDOWN" />
-      </SelectionState>
-      <SelectionState runConfigName="PerformerCatalogTest (1)">
-        <option name="selectionMode" value="DROPDOWN" />
-      </SelectionState>
-      <SelectionState runConfigName="testDisplayArtistsListAlphabetically() (1)">
+      <SelectionState runConfigName="Tests in 'com.example.vinyls_jetpack_application'">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
     </selectionStates>
