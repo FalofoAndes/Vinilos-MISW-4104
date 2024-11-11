@@ -30,6 +30,12 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+        binding.selectorsUp.selectorArtists.setOnClickListener{
+            if(navController.currentDestination?.id != R.id.performerFragment){
+                navController.navigate(R.id.performerFragment)
+            }
+        }
+
         binding.selectorsDown.selectorHome.setOnClickListener {
             if (navController.currentDestination?.id != R.id.homeFragment) {
                 navController.navigate(R.id.homeFragment)
