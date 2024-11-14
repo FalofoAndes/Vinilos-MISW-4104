@@ -29,9 +29,17 @@ class TrackAdapter(private var tracks: List<Track>) : RecyclerView.Adapter<Track
     override fun getItemCount(): Int {
         return tracks.size
     }
-
     fun updateTracks(newTracks: List<Track>) {
+        val oldSize = tracks.size
         tracks = newTracks
-        notifyDataSetChanged()
+        val newSize = newTracks.size
+
+        when {
+            newSize > oldSize -> notifyItemRangeInserted(oldSize, newSize - oldSize)
+            newSize < oldSize -> notifyItemRangeRemoved(newSize, oldSize - newSize)
+            else -> newTracks.indices.forEach { i ->
+                if (tracks[i] != newTracks[i]) notifyItemChanged(i)
+            }
+        }
     }
 }

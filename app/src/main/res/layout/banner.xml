@@ -10,7 +10,7 @@
         android:id="@+id/banner_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Banner Vinilos"
+        android:text="@string/banner_text"
         android:textSize="18sp"
         android:textStyle="bold"
         android:textColor="@android:color/white"
@@ -25,6 +25,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
         android:src="@drawable/ic_user"
+        android:contentDescription="@string/user_icon_description"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />

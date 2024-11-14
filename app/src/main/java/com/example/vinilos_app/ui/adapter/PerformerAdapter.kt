@@ -33,8 +33,29 @@ class PerformerAdapter(
     override fun getItemCount(): Int = performers.size
 
     fun updatePerformers(newPerformers: List<Performer>) {
-        performers = newPerformers.sortedBy { it.name } // Ordena alfabéticamente por el nombre
-        notifyDataSetChanged()
+        val oldSize = performers.size
+        val newSize = newPerformers.size
+
+        performers = newPerformers.sortedBy { it.name }. distinctBy { it.name }
+
+        when {
+            newSize > oldSize -> {
+                // Si hay más elementos, se insertan los nuevos
+                notifyItemRangeInserted(oldSize, newSize - oldSize)
+            }
+            newSize < oldSize -> {
+                // Si hay menos elementos, se eliminan los que sobran
+                notifyItemRangeRemoved(newSize, oldSize - newSize)
+            }
+            else -> {
+                // Si las listas son del mismo tamaño, revisamos si hubo cambios en los ítems
+                for (i in newPerformers.indices) {
+                    if (performers[i] != newPerformers[i]) {
+                        notifyItemChanged(i)
+                    }
+                }
+            }
+        }
     }
 
     // Método para obtener los performers ordenados

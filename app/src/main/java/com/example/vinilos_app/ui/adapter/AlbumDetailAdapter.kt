@@ -28,8 +28,4 @@ class AlbumDetailAdapter(
         }
     }
 
-    fun updateAlbum(newAlbum: Album) {
-        album = newAlbum
-        notifyDataSetChanged()
-    }
 }

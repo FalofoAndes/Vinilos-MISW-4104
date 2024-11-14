@@ -15,13 +15,14 @@ import com.example.vinilos_app.models.Comment
 import com.example.vinilos_app.models.Performer
 import com.example.vinilos_app.models.Track
 import kotlinx.coroutines.suspendCancellableCoroutine
+import kotlinx.coroutines.withContext
 import java.text.SimpleDateFormat
 import java.util.Locale
 import java.util.TimeZone
 import kotlin.coroutines.suspendCoroutine
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
-
+import kotlinx.coroutines.Dispatchers
 class NetworkServiceAdapter private constructor(context: Context) {
 
     companion object {
@@ -184,24 +185,31 @@ class NetworkServiceAdapter private constructor(context: Context) {
     ): String = if (jsonObject.has(param)) jsonObject.getString(param) else ""
 
 
-    suspend fun getPerformers(): List<Performer> = suspendCancellableCoroutine { continuation ->
+    suspend fun getPerformers(): List<Performer> = withContext(Dispatchers.IO) {
         EspressoIdlingResource.increment()
-        requestQueue.add(getRequest("musicians",
-            { response ->
-                val resp = JSONArray(response)
-                val list = mutableListOf<Performer>()
-                for (i in 0 until resp.length()) {
-                    val performer = getPerformer(resp.getJSONObject(i))
-                    list.add(performer)
-                }
-                continuation.resume(list) // Retorna la lista en caso de éxito
-                EspressoIdlingResource.decrement()
-            },
-            { error ->
-                continuation.resumeWithException(error) // Lanza una excepción en caso de error
-                EspressoIdlingResource.decrement()
+        return@withContext try {
+            val response = suspendCancellableCoroutine<String> { continuation ->
+                requestQueue.add(getRequest("musicians",
+                    { response ->
+                        continuation.resume(response)
+                    },
+                    { error ->
+                        continuation.resumeWithException(error)
+                    }
+                ))
             }
-        ))
+            val resp = JSONArray(response)
+            val list = mutableListOf<Performer>()
+            for (i in 0 until resp.length()) {
+                val performer = getPerformer(resp.getJSONObject(i))
+                list.add(performer)
+            }
+            EspressoIdlingResource.decrement()
+            list // Returns the list of performers
+        } catch (e: Exception) {
+            EspressoIdlingResource.decrement()
+            throw e // Rethrow exception if something goes wrong
+        }
     }
 
     private fun getPerformer(jsonObject: JSONObject): Performer {

@@ -58,7 +58,7 @@ class AlbumDetailFragment : Fragment() {
             album?.let {
                 binding.album = it
                 trackAdapter.updateTracks(it.tracks) // Actualiza el adaptador con los tracks
-                trackAdapter.notifyDataSetChanged() // Notifica al adaptador
+
             }
         })
 
