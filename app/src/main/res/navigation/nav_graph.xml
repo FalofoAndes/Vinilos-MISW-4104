@@ -43,8 +43,17 @@
         android:label="fragment_performer"
         tools:layout="@layout/performer_fragment" >
         <action
-            android:id="@+id/action_performerFragment_to_albumDetailFragment"
-            app:destination="@id/albumDetailFragment" />
+            android:id="@+id/action_performerFragment_to_performerDetailFragment"
+            app:destination="@id/performerDetailFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/performerDetailFragment"
+        android:name="com.example.vinilos_app.ui.PerformerDetailFragment"
+        android:label="PerformerDetailFragment" >
+        <argument
+            android:name="idPerformer"
+            app:argType="integer" />
     </fragment>
 
 </navigation>
