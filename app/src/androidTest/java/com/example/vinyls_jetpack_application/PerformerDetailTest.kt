@@ -22,7 +22,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)
-class AlbumDetailTest {
+class PerformerDetailTest {
 
     @get:Rule
     val activityTestRule = ActivityScenarioRule(MainActivity::class.java)
@@ -38,14 +38,14 @@ class AlbumDetailTest {
     }
 
     @Test
-    fun albumDetailToHome() {
-        // Navegar a la sección de álbumes
-        onView(withId(R.id.selector_albums))
+    fun performerDetailToHome() {
+        // Navegar a la sección de artistas
+        onView(withId(R.id.selector_artists))
             .check(matches(isDisplayed()))
             .perform(click())
 
-        // Hacer clic en el botón "Ver" del primer álbum
-        onView(withId(R.id.recycler_view_albums))
+        // Hacer clic en el botón "Ver" del primer artista
+        onView(withId(R.id.recycler_view_performers))
             .perform(RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(0, clickChildViewWithId(R.id.button_ver)))
 
         // Navegar de vuelta al Home
@@ -62,54 +62,38 @@ class AlbumDetailTest {
     }
 
     @Test
-    fun albumDetailToAlbumCatalog() {
-        // Navegar a la sección de álbumes
-        onView(withId(R.id.selector_albums))
+    fun performerDetailToAlbumCatalog() {
+        // Navegar a la sección de artistas
+        onView(withId(R.id.selector_artists))
             .check(matches(isDisplayed()))
             .perform(click())
 
-        // Hacer clic en el botón "Ver" del primer álbum
-        onView(withId(R.id.recycler_view_albums))
+        // Hacer clic en el botón "Ver" del primer artista
+        onView(withId(R.id.recycler_view_performers))
             .perform(RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(0, clickChildViewWithId(R.id.button_ver)))
 
         // Volver al catálogo de álbumes
-        onView(withId(R.id.selector_albums))
+        onView(withId(R.id.selector_artists))
             .check(matches(isDisplayed()))
             .perform(click())
 
-        // Verificar que la portada del álbum está visible
-        onView(withId(R.id.recycler_view_albums))
+        // Verificar que la portada del artista está visible
+        onView(withId(R.id.recycler_view_performers))
             .perform(RecyclerViewActions.scrollToPosition<RecyclerView.ViewHolder>(0))
-            .check(matches(hasDescendant(withId(R.id.album_cover))))
+            .check(matches(hasDescendant(withId(R.id.image_performer))))
     }
 
     @Test
-    fun albumCatalogToAlbumDetail() {
-        // Navegar a la sección de álbumes
-        onView(withId(R.id.selector_albums))
+    fun performerCatalogToPerformerDetail() {
+        // Navegar a la sección de artistas
+        onView(withId(R.id.selector_artists))
             .check(matches(isDisplayed()))
             .perform(click())
 
-        // Hacer clic en el botón "Ver" del primer álbum
-        onView(withId(R.id.recycler_view_albums))
+        // Hacer clic en el botón "Ver" del primer artista
+        onView(withId(R.id.recycler_view_performers))
             .perform(RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(0, clickChildViewWithId(R.id.button_ver)))
 
-        // Verificar detalles del álbum
-        onView(withId(R.id.album_name))
-            .check(matches(isDisplayed()))
-
-        onView(withId(R.id.album_release_date))
-            .check(matches(isDisplayed()))
-
-        onView(withId(R.id.album_cover))
-            .check(matches(isDisplayed()))
-
-        onView(withId(R.id.album_description))
-            .check(matches(isDisplayed()))
-
-        // Verificar que el RecyclerView de tracks está visible
-        onView(withId(R.id.recycler_view_tracks))
-            .check(matches(isDisplayed()))
     }
 
     // Matcher personalizado para clics en hijos específicos de un item del RecyclerView
