@@ -223,5 +223,21 @@ class NetworkServiceAdapter private constructor(context: Context) {
         )
     }
 
+    fun getPerformerDetail(musicianId: Int, onComplete: (Performer) -> Unit, onError: (error: VolleyError) -> Unit) {
+        EspressoIdlingResource.increment()
+        requestQueue.add(getRequest("musicians/$musicianId",
+            { response ->
+                val item = JSONObject(response)
+                val musician = getPerformer(item)
+                onComplete(musician)
+                EspressoIdlingResource.decrement()
+            },
+            { error ->
+                onError(error)
+                EspressoIdlingResource.decrement()
+            }
+        ))
+    }
+
 
 }
