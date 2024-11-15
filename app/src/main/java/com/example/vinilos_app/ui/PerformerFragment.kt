@@ -40,7 +40,7 @@ class PerformerFragment : Fragment(R.layout.performer_fragment) {
         // Configurar RecyclerView y Adapter
         val recyclerView = view.findViewById<RecyclerView>(R.id.recycler_view_performers)
         adapter = PerformerAdapter(performerList) { performerId ->
-            val action = PerformerFragmentDirections.actionPerformerFragmentToAlbumDetailFragment(performerId)
+            val action = PerformerFragmentDirections.actionPerformerFragmentToPerformerDetailFragment(performerId)
             findNavController().navigate(action)
         }
         recyclerView.adapter = adapter
