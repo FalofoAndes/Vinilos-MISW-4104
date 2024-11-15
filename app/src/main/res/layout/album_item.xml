@@ -27,7 +27,8 @@
                 android:layout_height="wrap_content"
                 android:adjustViewBounds="true"
                 android:maxHeight="200dp"
-                app:imageUrl="@{album.cover}" />
+                app:imageUrl="@{album.cover}"
+                android:contentDescription="@{album.name}"/>
 
             <TextView
                 android:id="@+id/album_name"

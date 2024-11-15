@@ -28,7 +28,26 @@ class CollectorsAdapter(private var collectors: List<Collector>) : RecyclerView.
     override fun getItemCount(): Int = collectors.size
 
     fun updateCollectors(newCollectors: List<Collector>) {
+        val oldSize = collectors.size
         collectors = newCollectors
-        notifyDataSetChanged()
+        val newSize = newCollectors.size
+
+        when {
+            newSize > oldSize -> {
+                notifyItemRangeInserted(oldSize, newSize - oldSize) // Notifica la inserción de elementos
+            }
+            newSize < oldSize -> {
+                notifyItemRangeRemoved(newSize, oldSize - newSize) // Notifica la eliminación de elementos
+            }
+            else -> {
+                // Si los tamaños coinciden, verifica si hay elementos modificados
+                for (i in newCollectors.indices) {
+                    if (collectors[i] != newCollectors[i]) {
+                        notifyItemChanged(i) // Notifica el cambio de un item específico
+                    }
+                }
+            }
+        }
     }
+
 }

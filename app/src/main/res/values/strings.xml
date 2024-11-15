@@ -35,5 +35,13 @@
 
     <string name="label_home">Home</string>
     <string name="label_search">Search</string>
+    <string name="add_new_album">Agregar nuevo álbum</string>
+    <string name="banner_text">Banner Vinilos</string>
+    <string name="user_icon_description">Icono de usuario</string>
+    <string name="fab_add_album_description">Agregar nuevo álbum</string>
+    <string name="central_image_description">Imagen central de un vinilo</string>
+    <string name="acerca_de_app_text">Acerca de la app</string>
+    <string name="performer_image_description">Imagen del artista</string>
+    <string name="view_button_text">Ver</string>
 
 </resources>
