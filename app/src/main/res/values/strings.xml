@@ -12,6 +12,7 @@
     <string name="collector_name_placeholder">Nombre del coleccionista</string>
     <string name="collector_email_placeholder">Correo del coleccionista</string>
     <string name="collector_phone_placeholder">Número telefónico</string>
+    <string name="collector_icon_text">Collector Icon</string>
     <string name="comment_rating_placeholder">##</string>
     <string name="comment_description_placeholder">Descripción del comentario</string>
     <string name="album_name_placeholder">Nombre del album</string>
