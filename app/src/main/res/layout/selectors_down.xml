@@ -21,7 +21,6 @@
 
     <!-- Selector 2: Search -->
     <TextView
-        android:id="@+id/selector_search"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"

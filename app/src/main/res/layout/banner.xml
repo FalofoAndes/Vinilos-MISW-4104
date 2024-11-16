@@ -7,7 +7,6 @@
     android:background="@color/teal_200"> <!-- Reemplaza con el color que desees -->
 
     <TextView
-        android:id="@+id/banner_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/banner_text"
@@ -20,7 +19,6 @@
         app:layout_constraintStart_toStartOf="parent"/>
 
     <ImageView
-        android:id="@+id/user_icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
