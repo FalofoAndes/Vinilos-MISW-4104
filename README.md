@@ -10,11 +10,13 @@
 - Pruebas
 
 
-
 ## Características
 
 - HU01: Consultar catálogo de álbumes: Como usuario visitante quiero navegar el catálogo de los álbumes para escoger los que más me interesan.
 - HU02: Consultar la información detallada de un álbum: Como usuario visitante quiero ver el detalle de un álbum para ampliar la información sobre él.
+- HU03:	Consultar el listado de artistas: Como usuario visitante quiero ver el listado de artistas para escoger lo que más me interesan.
+- HU04:	Consultar la información detallada de un artista: Como usuario visitante quiero ver el detalle de un artista para ampliar la información sobre él.
+- HU05:	Consultar listado de coleccionistas: Como usuario visitante quiero consultar el listado de coleccionistas para seleccionar el que más me interese.
 
 
 ## Tecnologías Usadas
@@ -46,7 +48,3 @@
 
 ## Pruebas
 1. Ir a la carpeta app/src/androidtest dar clic derecho y seleccionar la opción "Run all tests"
-   
-   
-
-
