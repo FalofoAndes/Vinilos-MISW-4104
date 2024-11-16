@@ -29,6 +29,18 @@ class MainActivity : AppCompatActivity() {
                 navController.navigate(R.id.albumFragment)
             }
         }
+        
+        binding.selectorsUp.selectorCollectors.setOnClickListener {
+            if (navController.currentDestination?.id != R.id.collectorsFragment) {
+                navController.navigate(R.id.collectorsFragment)
+            }
+        }
+        
+        binding.selectorsUp.selectorArtists.setOnClickListener{
+            if(navController.currentDestination?.id != R.id.performerFragment){
+                navController.navigate(R.id.performerFragment)
+            }
+        }
 
         binding.selectorsDown.selectorHome.setOnClickListener {
             if (navController.currentDestination?.id != R.id.homeFragment) {
@@ -38,6 +50,7 @@ class MainActivity : AppCompatActivity() {
 
         navController.addOnDestinationChangedListener { _, destination, _ ->
             binding.selectorsUp.selectorAlbums.isEnabled = destination.id != R.id.albumFragment
+            binding.selectorsUp.selectorCollectors.isEnabled = destination.id != R.id.collectorsFragment
             binding.selectorsDown.selectorHome.isEnabled = destination.id != R.id.homeFragment
         }
     }

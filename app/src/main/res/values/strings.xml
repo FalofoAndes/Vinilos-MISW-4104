@@ -2,24 +2,29 @@
     <string name="app_name">Vinyls_Jetpack_Application</string>
     <string name="action_settings">Settings</string>
     <!-- Strings used for fragments for navigation -->
-    <string name="first_fragment_label">First Fragment</string>
-    <string name="second_fragment_label">Second Fragment</string>
-    <string name="next">Next</string>
-    <string name="previous">Previous</string>
 
-    <string name="hello_first_fragment">Hello first fragment</string>
-    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
-    <string name="collector_name_placeholder">Nombre del coleccionista</string>
-    <string name="collector_email_placeholder">Correo del coleccionista</string>
-    <string name="collector_phone_placeholder">Número telefónico</string>
-    <string name="comment_rating_placeholder">##</string>
-    <string name="comment_description_placeholder">Descripción del comentario</string>
-    <string name="album_name_placeholder">Nombre del album</string>
-    <string name="album_description_placeholder">Descripcion del album</string>
-    <string name="txt_no_comments">No hay comentarios para este álbum</string>
-    <string name="title_albums">Albums</string>
-    <string name="title_collectors">Coleccionistas</string>
-    <string name="title_comments">Comentarios del álbum</string>
+    <string name="collector_icon_text">Collector Icon</string>
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="icon_description_artists">Icon representing Artists</string>
+    <string name="icon_description_albums">Icon representing Albums</string>
+    <string name="icon_description_collectors">Icon representing Collectors</string>
+
+    <string name="label_artists">Artists</string>
+    <string name="label_albums">Albums</string>
+    <string name="label_collectors">Collectors</string>
+
+    <string name="icon_description_home">Icon representing Home</string>
+    <string name="icon_description_search">Icon representing Search</string>
+
+    <string name="label_home">Home</string>
+    <string name="label_search">Search</string>
+    <string name="add_new_album">Agregar nuevo álbum</string>
+    <string name="banner_text">Banner Vinilos</string>
+    <string name="user_icon_description">Icono de usuario</string>
+    <string name="fab_add_album_description">Agregar nuevo álbum</string>
+    <string name="central_image_description">Imagen central de un vinilo</string>
+    <string name="acerca_de_app_text">Acerca de la app</string>
+    <string name="performer_image_description">Imagen del artista</string>
+    <string name="view_button_text">Ver</string>
+
 </resources>

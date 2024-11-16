@@ -10,16 +10,19 @@ import com.android.volley.toolbox.Volley
 import org.json.JSONArray
 import org.json.JSONObject
 import com.example.vinilos_app.models.Album
+import com.example.vinilos_app.models.Collector
 import com.example.vinilos_app.models.Comment
 import com.example.vinilos_app.models.Performer
 import com.example.vinilos_app.models.Track
+import kotlinx.coroutines.suspendCancellableCoroutine
+import kotlinx.coroutines.withContext
 import java.text.SimpleDateFormat
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
-import java.util.Date
 import java.util.Locale
 import java.util.TimeZone
-
+import kotlin.coroutines.suspendCoroutine
+import kotlin.coroutines.resume
+import kotlin.coroutines.resumeWithException
+import kotlinx.coroutines.Dispatchers
 class NetworkServiceAdapter private constructor(context: Context) {
 
     companion object {
@@ -141,7 +144,100 @@ class NetworkServiceAdapter private constructor(context: Context) {
         return album
     }
 
+    suspend fun getCollectors(): List<Collector> = suspendCoroutine { cont ->
+        EspressoIdlingResource.increment()
+
+        requestQueue.add(getRequest("collectors",
+            { response ->
+                try {
+                    val resp = JSONArray(response)
+                    val list = mutableListOf<Collector>()
+                    for (i in 0 until resp.length()) {
+                        val collector = getCollector(resp.getJSONObject(i))
+                        list.add(collector)
+                    }
+                    cont.resume(list) // Resumes with the result
+                } catch (e: Exception) {
+                    cont.resumeWithException(e) // Resumes with exception
+                } finally {
+                    EspressoIdlingResource.decrement()
+                }
+            },
+            { error ->
+                cont.resumeWithException(error) // Resumes with VolleyError
+                EspressoIdlingResource.decrement()
+            }
+        ))
+    }
+
+    private fun getCollector(jsonObject: JSONObject): Collector {
+        val collector = Collector(
+            collectorId = jsonObject.getInt("id"),
+            name = jsonObject.getString("name"),
+            telephone = jsonObject.getString("telephone"),
+            email = jsonObject.getString("email")
+        )
+        return collector
+    }
+
     private fun getNullable(
         jsonObject: JSONObject, param: String
     ): String = if (jsonObject.has(param)) jsonObject.getString(param) else ""
+
+
+    suspend fun getPerformers(): List<Performer> = withContext(Dispatchers.IO) {
+        EspressoIdlingResource.increment()
+        return@withContext try {
+            val response = suspendCancellableCoroutine<String> { continuation ->
+                requestQueue.add(getRequest("musicians",
+                    { response ->
+                        continuation.resume(response)
+                    },
+                    { error ->
+                        continuation.resumeWithException(error)
+                    }
+                ))
+            }
+            val resp = JSONArray(response)
+            val list = mutableListOf<Performer>()
+            for (i in 0 until resp.length()) {
+                val performer = getPerformer(resp.getJSONObject(i))
+                list.add(performer)
+            }
+            EspressoIdlingResource.decrement()
+            list // Returns the list of performers
+        } catch (e: Exception) {
+            EspressoIdlingResource.decrement()
+            throw e // Rethrow exception if something goes wrong
+        }
+    }
+
+    private fun getPerformer(jsonObject: JSONObject): Performer {
+        return Performer(
+            id = jsonObject.getInt("id"),
+            name = jsonObject.getString("name"),
+            image = jsonObject.getString("image"),
+            description = jsonObject.getString("description"),
+            birthDate = getNullable(jsonObject, "birthDate"),
+            creationDate = getNullable(jsonObject, "creationDate")
+        )
+    }
+
+    fun getPerformerDetail(musicianId: Int, onComplete: (Performer) -> Unit, onError: (error: VolleyError) -> Unit) {
+        EspressoIdlingResource.increment()
+        requestQueue.add(getRequest("musicians/$musicianId",
+            { response ->
+                val item = JSONObject(response)
+                val musician = getPerformer(item)
+                onComplete(musician)
+                EspressoIdlingResource.decrement()
+            },
+            { error ->
+                onError(error)
+                EspressoIdlingResource.decrement()
+            }
+        ))
+    }
+
+
 }

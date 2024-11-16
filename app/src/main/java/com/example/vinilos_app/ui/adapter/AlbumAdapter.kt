@@ -31,7 +31,26 @@ class AlbumAdapter(private var albums: List<Album>, private val onButtonClick: (
     override fun getItemCount(): Int = albums.size
 
     fun updateAlbums(newAlbums: List<Album>) {
+        // DiffUtil can be used here for efficient updates, or simply manage based on counts
+        val oldSize = albums.size
         albums = newAlbums
-        notifyDataSetChanged()
+        val newSize = newAlbums.size
+
+        when {
+            newSize > oldSize -> {
+                notifyItemRangeInserted(oldSize, newSize - oldSize)
+            }
+            newSize < oldSize -> {
+                notifyItemRangeRemoved(newSize, oldSize - newSize)
+            }
+            else -> {
+                // When sizes match, check for individual changes
+                for (i in newAlbums.indices) {
+                    if (albums[i] != newAlbums[i]) {
+                        notifyItemChanged(i)
+                    }
+                }
+            }
+        }
     }
 }

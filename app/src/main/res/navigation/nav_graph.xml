@@ -2,7 +2,6 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/nav_graph"
     app:startDestination="@id/homeFragment">
 
     <fragment
@@ -29,4 +28,31 @@
             android:name="idAlbum"
             app:argType="integer" />
     </fragment>
+
+    <fragment
+        android:id="@+id/collectorsFragment"
+        android:name="com.example.vinilos_app.ui.CollectorsFragment"
+        android:label="fragment_collectors"
+        tools:layout="@layout/collectors_fragment" >
+    </fragment>
+
+    <fragment
+        android:id="@+id/performerFragment"
+        android:name="com.example.vinilos_app.ui.PerformerFragment"
+        android:label="fragment_performer"
+        tools:layout="@layout/performer_fragment" >
+        <action
+            android:id="@+id/action_performerFragment_to_performerDetailFragment"
+            app:destination="@id/performerDetailFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/performerDetailFragment"
+        android:name="com.example.vinilos_app.ui.PerformerDetailFragment"
+        android:label="PerformerDetailFragment" >
+        <argument
+            android:name="idPerformer"
+            app:argType="integer" />
+    </fragment>
+
 </navigation>
