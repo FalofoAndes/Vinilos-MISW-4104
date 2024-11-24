@@ -11,6 +11,7 @@ import org.json.JSONArray
 import org.json.JSONObject
 import com.example.vinilos_app.models.Album
 import com.example.vinilos_app.models.Collector
+import com.example.vinilos_app.models.CollectorDetail
 import com.example.vinilos_app.models.Comment
 import com.example.vinilos_app.models.Performer
 import com.example.vinilos_app.models.Track
@@ -237,6 +238,63 @@ class NetworkServiceAdapter private constructor(context: Context) {
                 EspressoIdlingResource.decrement()
             }
         ))
+    }
+
+
+    suspend fun getCollectorDetail(collectorId: Int): CollectorDetail = withContext(Dispatchers.IO) {
+        suspendCoroutine { cont ->
+            EspressoIdlingResource.increment()
+
+            requestQueue.add(getRequest("collectors/$collectorId",
+                { response ->
+                    try {
+                        val jsonObject = JSONObject(response)
+
+                        // Parsear el detalle del collector
+                        val collectorDetail = CollectorDetail(
+                            collectorId = jsonObject.getInt("id"),
+                            name = jsonObject.getString("name"),
+                            telephone = jsonObject.optString("telephone", ""),
+                            email = jsonObject.optString("email", ""),
+                            comments = jsonObject.getJSONArray("comments").let { commentsArray ->
+                                List(commentsArray.length()) { i ->
+                                    val commentObj = commentsArray.getJSONObject(i)
+                                    Comment(
+                                        id = commentObj.getInt("id"),
+                                        description = commentObj.getString("description"),
+                                        rating = commentObj.getInt("rating")
+                                    )
+                                }
+                            },
+                            favoritePerformers = jsonObject.getJSONArray("favoritePerformers").let { performersArray ->
+                                List(performersArray.length()) { i ->
+                                    val performerObj = performersArray.getJSONObject(i)
+                                    Performer(
+                                        id = performerObj.getInt("id"),
+                                        name = performerObj.getString("name"),
+                                        image = performerObj.optString("image", ""),
+                                        description = performerObj.optString("description", ""),
+                                        birthDate = performerObj.optString("birthDate", ""),
+                                        creationDate = getNullable(jsonObject, "creationDate")
+                                    )
+                                }
+                            },
+
+                        )
+
+                        cont.resume(collectorDetail) // Retorna el detalle del coleccionista
+                    } catch (e: Exception) {
+                        cont.resumeWithException(e) // Manejo de excepción
+                    } finally {
+                        EspressoIdlingResource.decrement()
+                    }
+                },
+                { error ->
+                    cont.resumeWithException(error) // Manejo de error de red
+                    EspressoIdlingResource.decrement()
+                }
+            ))
+        }
     }
 
 
