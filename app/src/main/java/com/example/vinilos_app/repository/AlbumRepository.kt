@@ -20,5 +20,9 @@ class AlbumRepository(private val context: Context) {
         networkService.getAlbumDetail(albumId, onComplete, onError)
     }
 
+    fun postAlbum(album: Album, onComplete: (Album?) -> Unit, onError: (VolleyError) -> Unit) {
+        networkService.postAlbums(album, onComplete, onError)
+    }
+
 
 }

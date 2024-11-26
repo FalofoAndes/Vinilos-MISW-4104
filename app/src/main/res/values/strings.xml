@@ -4,7 +4,6 @@
     <!-- Strings used for fragments for navigation -->
 
     <string name="collector_icon_text">Collector Icon</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="icon_description_artists">Icon representing Artists</string>
     <string name="icon_description_albums">Icon representing Albums</string>
     <string name="icon_description_collectors">Icon representing Collectors</string>
@@ -26,5 +25,14 @@
     <string name="acerca_de_app_text">Acerca de la app</string>
     <string name="performer_image_description">Imagen del artista</string>
     <string name="view_button_text">Ver</string>
+    <string name="album_name">Nombre del Álbum</string>
+    <string name="album_cover_url">URL de la Portada</string>
+    <string name="album_release_date">Fecha de Lanzamiento</string>
+    <string name="album_description">Descripción</string>
+    <string name="album_genre">Género</string>
+    <string name="album_record_label">Sello Discográfico</string>
+    <string name="cancel">Cancelar</string>
+    <string name="album_save">Guardar Álbum</string>
+    <string name="add_album_title">Agregar Álbum</string>
 
 </resources>

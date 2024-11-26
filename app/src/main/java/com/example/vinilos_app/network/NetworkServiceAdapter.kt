@@ -5,6 +5,7 @@ import com.android.volley.Request
 import com.android.volley.RequestQueue
 import com.android.volley.Response
 import com.android.volley.VolleyError
+import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import org.json.JSONArray
@@ -81,6 +82,10 @@ class NetworkServiceAdapter private constructor(context: Context) {
 
     private fun getRequest(path: String, responseListener: Response.Listener<String>, errorListener: Response.ErrorListener): StringRequest {
         return StringRequest(Request.Method.GET, BASE_URL + path, responseListener, errorListener)
+    }
+
+    fun postRequest(path: String, body: JSONObject,  responseListener: Response.Listener<JSONObject>, errorListener: Response.ErrorListener ):JsonObjectRequest{
+        return  JsonObjectRequest(Request.Method.POST, BASE_URL + path, body, responseListener, errorListener)
     }
 
     private fun getAlbum(jsonObject: JSONObject): Album {
@@ -238,6 +243,56 @@ class NetworkServiceAdapter private constructor(context: Context) {
             }
         ))
     }
+
+    fun postAlbums(
+        album: Album,
+        onComplete: (Album) -> Unit,
+        onError: (error: VolleyError) -> Unit
+    ) {
+        EspressoIdlingResource.increment()
+
+        val postParams = JSONObject().apply {
+            put("name", album.name)
+            put("cover", album.cover)
+            put("releaseDate", album.releaseDate)
+            put("description", album.description)
+            put("genre", album.genre)
+            put("recordLabel", album.recordLabel)
+        }
+
+        requestQueue.add(
+            postRequest(
+                "albums",
+                postParams,
+                { response ->
+                    try {
+                        val returnedAlbum = Album(
+                            albumId = response.getInt("id"),
+                            name = response.getString("name"),
+                            cover = response.getString("cover"),
+                            releaseDate = response.getString("releaseDate"),
+                            description = response.getString("description"),
+                            genre = response.getString("genre"),
+                            recordLabel = response.getString("recordLabel"),
+                            emptyList(),
+                            emptyList(),
+                            emptyList()
+                        )
+                        onComplete(returnedAlbum)
+                    } catch (e: Exception) {
+                        onError(VolleyError("Error parsing response: ${e.message}"))
+                    } finally {
+                        EspressoIdlingResource.decrement()
+                    }
+                },
+                { error ->
+                    onError(error)
+                    EspressoIdlingResource.decrement()
+                }
+            )
+        )
+    }
+
 
 
 }

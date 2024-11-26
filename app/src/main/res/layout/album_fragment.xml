@@ -31,7 +31,8 @@
             android:layout_marginBottom="16dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            android:contentDescription="@string/add_new_album" />
+            android:contentDescription="@string/add_new_album"
+            app:srcCompat="@drawable/baseline_add_24" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

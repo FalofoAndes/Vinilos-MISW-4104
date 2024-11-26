@@ -2,6 +2,7 @@ package com.example.vinilos_app.ui
 
 import android.os.Bundle
 import android.view.View
+import android.widget.Button
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
@@ -14,6 +15,7 @@ import com.example.vinyls_jetpack_application.R
 import com.example.vinilos_app.repository.AlbumRepository
 import com.example.vinilos_app.ui.adapter.AlbumAdapter
 import com.example.vinilos_app.viewmodels.AlbumCatalogViewModel
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class AlbumFragment : Fragment(R.layout.album_fragment) {
 
@@ -56,6 +58,16 @@ class AlbumFragment : Fragment(R.layout.album_fragment) {
 
         // Load album catalog
         albumCatalogViewModel.loadAlbumCatalog()
+
+        val addAlbumButton = view.findViewById<FloatingActionButton>(R.id.fab_add_album)
+
+        addAlbumButton.setOnClickListener {
+            // Navegar al fragment de agregar álbum
+            parentFragmentManager.beginTransaction()
+                .replace(R.id.nav_host_fragment, AddAlbumFragment())
+                .addToBackStack(null) //
+                .commit()
+        }
 
     }
 }
