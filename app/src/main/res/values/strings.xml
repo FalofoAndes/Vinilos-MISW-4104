@@ -34,5 +34,8 @@
     <string name="cancel">Cancelar</string>
     <string name="album_save">Guardar Álbum</string>
     <string name="add_album_title">Agregar Álbum</string>
-
+    <string name="add_track_title">Agregar Track</string>
+    <string name="track_name">Nombre del Track</string>
+    <string name="track_duration">Duración del Track</string>
+    <string name="save_track">Guardar Track</string>
 </resources>

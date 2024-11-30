@@ -1,6 +1,7 @@
 package com.example.vinilos_app.network
 
 import android.content.Context
+import android.util.Log
 import com.android.volley.Request
 import com.android.volley.RequestQueue
 import com.android.volley.Response
@@ -294,8 +295,6 @@ class NetworkServiceAdapter private constructor(context: Context) {
         )
     }
 
-
-
     suspend fun getCollectorDetail(collectorId: Int): CollectorDetail = withContext(Dispatchers.IO) {
         suspendCoroutine { cont ->
             EspressoIdlingResource.increment()
@@ -352,5 +351,74 @@ class NetworkServiceAdapter private constructor(context: Context) {
         }
     }
 
+    suspend fun getTracks(albumId: Int): List<Track> = withContext(Dispatchers.IO) {
+        val response = suspendCoroutine<String> { continuation ->
+            requestQueue.add(getRequest("albums/$albumId/tracks",
+                { response ->
+                    continuation.resume(response)
+                },
+                { error ->
+                    continuation.resumeWithException(error)
+                }
+            ))
+        }
 
+        val tracksArray = JSONArray(response)
+        val tracks = mutableListOf<Track>()
+        for (i in 0 until tracksArray.length()) {
+            val trackObj = tracksArray.getJSONObject(i)
+            tracks.add(
+                Track(
+                    id = trackObj.getInt("id"),
+                    name = trackObj.getString("name"),
+                    duration = trackObj.getString("duration")
+                )
+            )
+        }
+        tracks
+    }
+
+    suspend fun addTrack(
+        albumId: Int,
+        track: Track
+    ): Track = withContext(Dispatchers.IO) {
+        try {
+            // Log inicial para depurar el ID del álbum y los parámetros enviados
+            Log.d("NetworkServiceAdapter", "Adding track to albumId: $albumId")
+            Log.d("NetworkServiceAdapter", "Track details: name=${track.name}, duration=${track.duration}")
+
+            // Crear parámetros del POST
+            val postParams = JSONObject().apply {
+                put("name", track.name)
+                put("duration", track.duration)
+            }
+
+            // Realizar la solicitud y obtener la respuesta
+            val response = suspendCoroutine<JSONObject> { continuation ->
+                requestQueue.add(postRequest("albums/$albumId/tracks", postParams,
+                    { jsonResponse ->
+                        Log.d("NetworkServiceAdapter", "Track added successfully: $jsonResponse")
+                        continuation.resume(jsonResponse)
+                    },
+                    { error ->
+                        // Log detallado del error
+                        Log.e("NetworkServiceAdapter", "Error adding track: ${error.message}")
+                        continuation.resumeWithException(error)
+                    }
+                ))
+            }
+
+            // Crear y retornar el objeto Track a partir de la respuesta
+            Track(
+                id = response.getInt("id"),
+                name = response.getString("name"),
+                duration = response.getString("duration")
+            )
+
+        } catch (e: Exception) {
+            // Captura y log de errores generales
+            Log.e("NetworkServiceAdapter", "Exception in addTrack: ${e.message}", e)
+            throw e // Re-lanzar la excepción para que sea manejada por el ViewModel o la UI
+        }
+    }
 }

@@ -28,6 +28,21 @@
         <argument
             android:name="idAlbum"
             app:argType="integer" />
+        <!-- Acción para navegar a AddTrackFragment -->
+        <action
+            android:id="@+id/action_albumDetailFragment_to_addTrackFragment"
+            app:destination="@id/addTrackFragment" />
+    </fragment>
+
+    <!-- Nuevo fragmento para agregar tracks -->
+    <fragment
+        android:id="@+id/addTrackFragment"
+        android:name="com.example.vinilos_app.ui.AddTrackFragment"
+        android:label="AddTrackFragment"
+        tools:layout="@layout/add_track_fragment" >
+        <argument
+            android:name="albumId"
+            app:argType="integer" />
     </fragment>
 
     <fragment
