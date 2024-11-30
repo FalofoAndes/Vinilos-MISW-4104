@@ -21,6 +21,7 @@
             android:orientation="vertical"
             android:padding="16dp">
 
+            <!-- Nombre del álbum -->
             <TextView
                 android:id="@+id/album_name"
                 android:layout_width="wrap_content"
@@ -30,6 +31,7 @@
                 android:layout_marginBottom="8dp"
                 android:text="@{album.name}" />
 
+            <!-- Fecha de lanzamiento -->
             <TextView
                 android:id="@+id/album_release_date"
                 android:layout_width="wrap_content"
@@ -38,10 +40,12 @@
                 android:textColor="#888888"
                 android:text="@{album.releaseDate}" />
 
+            <!-- Contenedor de imagen y descripción -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:layout_marginBottom="16dp">
 
                 <ImageView
                     android:id="@+id/album_cover"
@@ -63,16 +67,21 @@
                     android:text="@{album.description}" />
             </LinearLayout>
 
+            <!-- RecyclerView scrolleable -->
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recycler_view_tracks"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:nestedScrollingEnabled="true" />
 
+            <!-- Botón fijo -->
             <Button
                 android:id="@+id/addTrackButton"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/add_track_title" />
+                android:text="@string/add_track_title"
+                android:layout_marginTop="16dp" />
 
         </LinearLayout>
 

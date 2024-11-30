@@ -1,33 +1,28 @@
 package com.example.vinilos_app.ui
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.example.vinilos_app.models.Album
 import com.example.vinilos_app.repository.AlbumRepository
-import com.example.vinilos_app.ui.adapter.AlbumDetailAdapter
+import com.example.vinilos_app.repository.TrackRepository
 import com.example.vinilos_app.ui.adapter.TrackAdapter
 import com.example.vinilos_app.viewmodels.AlbumDetailViewModel
-import com.example.vinyls_jetpack_application.R
+import com.example.vinilos_app.viewmodels.SharedAlbumViewModel
 import com.example.vinyls_jetpack_application.databinding.AlbumDetailItemBinding
 
-/**
- * A simple [Fragment] subclass.
- * Use the [AlbumDetailFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class AlbumDetailFragment : Fragment() {
 
     private lateinit var albumDetailViewModel: AlbumDetailViewModel
+    private lateinit var sharedAlbumViewModel: SharedAlbumViewModel
     private lateinit var trackAdapter: TrackAdapter
     private var albumId: Int? = null
     private lateinit var binding: AlbumDetailItemBinding
@@ -37,48 +32,75 @@ class AlbumDetailFragment : Fragment() {
 
         val args: AlbumDetailFragmentArgs by navArgs()
         albumId = args.idAlbum
-        val repository = AlbumRepository(requireContext())
-        albumDetailViewModel = ViewModelProvider(this, AlbumDetailViewModelFactory(repository))
-            .get(AlbumDetailViewModel::class.java)
+
+        val albumRepository = AlbumRepository(requireContext())
+        val trackRepository = TrackRepository(requireContext())
+        albumDetailViewModel = ViewModelProvider(
+            this,
+            AlbumDetailViewModelFactory(albumRepository, trackRepository)
+        )[AlbumDetailViewModel::class.java]
+
+        // Inicializa el ViewModel compartido
+        sharedAlbumViewModel = ViewModelProvider(requireActivity())[SharedAlbumViewModel::class.java]
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = AlbumDetailItemBinding.inflate(inflater, container, false)
+
         trackAdapter = TrackAdapter(emptyList())
+        binding.recyclerViewTracks.apply {
+            layoutManager = LinearLayoutManager(requireContext())
+            adapter = trackAdapter
+        }
 
-        // Configura el RecyclerView para las pistas (tracks)
-        binding.recyclerViewTracks.layoutManager = LinearLayoutManager(requireContext())
-        binding.recyclerViewTracks.adapter = trackAdapter
-
-        // Observa el detalle del álbum
-        albumDetailViewModel.albumDetail.observe(viewLifecycleOwner, Observer { album ->
+        albumDetailViewModel.albumDetail.observe(viewLifecycleOwner) { album ->
             album?.let {
+                Log.d("AlbumDetailFragment", "Album updated: $album") // Log para verificar actualizaciones
                 binding.album = it
-                trackAdapter.updateTracks(it.tracks) // Actualiza el adaptador con los tracks
-
+                trackAdapter.updateTracks(it.tracks)
             }
-        })
+        }
 
-        // Observa errores
-        albumDetailViewModel.error.observe(viewLifecycleOwner, Observer { errorMessage ->
+        sharedAlbumViewModel.trackAdded.observe(viewLifecycleOwner) { newTrack ->
+            newTrack?.let {
+                val currentAlbum = albumDetailViewModel.albumDetail.value
+                currentAlbum?.let { album ->
+                    val updatedAlbum = album.copy(tracks = album.tracks + newTrack)
+                    Log.d("AlbumDetailFragment", "Updating album with new track: $newTrack")
+                    albumDetailViewModel.updateAlbum(updatedAlbum)
+                }
+                sharedAlbumViewModel.clearTrackAdded()
+            }
+        }
+
+        albumDetailViewModel.error.observe(viewLifecycleOwner) { errorMessage ->
             Toast.makeText(requireContext(), errorMessage, Toast.LENGTH_SHORT).show()
-        })
+        }
 
-        // Cargar los detalles del álbum
+        binding.addTrackButton.setOnClickListener {
+            albumId?.let { id ->
+                val action = AlbumDetailFragmentDirections.actionAlbumDetailFragmentToAddTrackFragment(id)
+                findNavController().navigate(action)
+            }
+        }
+
         albumId?.let { albumDetailViewModel.loadAlbumDetail(it) }
 
         return binding.root
     }
 }
 
-class AlbumDetailViewModelFactory(private val repository: AlbumRepository) : ViewModelProvider.Factory {
+class AlbumDetailViewModelFactory(
+    private val albumRepository: AlbumRepository,
+    private val trackRepository: TrackRepository
+) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(AlbumDetailViewModel::class.java)) {
             @Suppress("UNCHECKED_CAST")
-            return AlbumDetailViewModel(repository) as T
+            return AlbumDetailViewModel(albumRepository, trackRepository) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }
