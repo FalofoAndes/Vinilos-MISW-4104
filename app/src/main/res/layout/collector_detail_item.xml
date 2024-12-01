@@ -57,10 +57,9 @@
                         android:paddingBottom="8dp" />
 
                     <TextView
-
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Email:"
+                        android:text="@string/email_label"
                         android:textStyle="bold"
                         android:textSize="14sp"
                         android:textColor="@color/secondary_text_color" />
@@ -75,7 +74,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Telephone:"
+                        android:text="@string/telephone_label"
                         android:textStyle="bold"
                         android:layout_marginTop="8dp"
                         android:textSize="14sp"
@@ -108,7 +107,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Comments:"
+                        android:text="@string/comments_label"
                         android:textStyle="bold"
                         android:textSize="18sp"
                         android:textColor="@color/secondary_text_color"
@@ -155,7 +154,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Favorite Performers:"
+                        android:text="@string/favorite_performers_label"
                         android:textStyle="bold"
                         android:textSize="18sp"
                         android:textColor="@color/secondary_text_color"

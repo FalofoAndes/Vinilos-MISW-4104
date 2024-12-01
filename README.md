@@ -17,7 +17,9 @@
 - HU03:	Consultar el listado de artistas: Como usuario visitante quiero ver el listado de artistas para escoger lo que más me interesan.
 - HU04:	Consultar la información detallada de un artista: Como usuario visitante quiero ver el detalle de un artista para ampliar la información sobre él.
 - HU05:	Consultar listado de coleccionistas: Como usuario visitante quiero consultar el listado de coleccionistas para seleccionar el que más me interese.
-
+- HU06: Consultar la información detallada de un coleccionista: Como usuario visitante quiero ver el detalle de un coleccionista para conocer sus gustos musicales.
+- HU07:Crear un álbum: Como coleccionista quiero agregar un álbum al listado para mantener actualizados los datos.
+- HU08:Asociar tracks con un álbum: Como coleccionista quiero agregar tracks a un álbum para actualizar el catálogo.
 
 ## Tecnologías Usadas
 
