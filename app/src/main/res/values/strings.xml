@@ -38,4 +38,8 @@
     <string name="track_name">Nombre del Track</string>
     <string name="track_duration">Duración del Track</string>
     <string name="save_track">Guardar Track</string>
+    <string name="email_label">Email:</string>
+    <string name="telephone_label">Telephone:</string>
+    <string name="comments_label">Comments:</string>
+    <string name="favorite_performers_label">Favorite Performers:</string>
 </resources>
