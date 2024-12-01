@@ -6,8 +6,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="16dp">
+        android:padding="16dp"
+        android:contentDescription="@string/add_album_screen"
+        android:importantForAccessibility="yes">
 
+        <!-- Título del formulario -->
         <TextView
             android:id="@+id/add_album_title"
             android:layout_width="wrap_content"
@@ -16,57 +19,90 @@
             android:textStyle="bold"
             android:layout_marginBottom="8dp"
             android:layout_gravity="center_horizontal"
-            android:text="@string/add_album_title" />
+            android:text="@string/add_album_title"
+            android:contentDescription="@string/add_album_title" />
 
+        <!-- Campo para el nombre del álbum -->
         <EditText
             android:id="@+id/albumName"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/album_name" />
+            android:layout_height="48dp"
+            android:hint="@string/album_name"
+            android:importantForAccessibility="yes"
+            android:contentDescription="@string/album_name_description"
+            android:inputType="text" />
 
+        <!-- Campo para la URL de la portada -->
         <EditText
             android:id="@+id/albumCover"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/album_cover_url" />
+            android:layout_height="48dp"
+            android:hint="@string/album_cover_url"
+            android:importantForAccessibility="yes"
+            android:contentDescription="@string/album_cover_description"
+            android:inputType="textUri" />
 
+        <!-- Campo para la fecha de lanzamiento -->
         <EditText
             android:id="@+id/albumReleaseDate"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/album_release_date" />
+            android:layout_height="48dp"
+            android:hint="@string/album_release_date"
+            android:importantForAccessibility="yes"
+            android:contentDescription="@string/album_release_date_description"
+            android:inputType="date" />
 
+        <!-- Campo para la descripción del álbum -->
         <EditText
             android:id="@+id/albumDescription"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/album_description" />
+            android:layout_height="48dp"
+            android:hint="@string/album_description"
+            android:importantForAccessibility="yes"
+            android:contentDescription="@string/album_description"
+            android:inputType="textMultiLine"
+            android:minLines="3"
+            android:gravity="top" />
 
+        <!-- Selector de género -->
         <Spinner
             android:id="@+id/albumGenre"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/album_genre" />
+            android:layout_height="48dp"
+            android:spinnerMode="dropdown"
+            android:contentDescription="@string/album_genre_description"
+            android:importantForAccessibility="yes" />
 
+        <!-- Selector de casa discográfica -->
         <Spinner
             android:id="@+id/albumRecordLabel"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/album_record_label" />
+            android:layout_height="48dp"
+            android:spinnerMode="dropdown"
+            android:contentDescription="@string/album_record_label_description"
+            android:importantForAccessibility="yes" />
 
+        <!-- Botón Cancelar -->
         <Button
             android:id="@+id/cancelAlbum"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="48dp"
             android:text="@string/cancel"
-            android:layout_marginTop="8dp"/>
+            android:layout_marginTop="8dp"
+            android:contentDescription="@string/cancel_button"
+            android:importantForAccessibility="yes"
+            android:backgroundTint="@color/cancel_button_color" />
 
+        <!-- Botón Guardar -->
         <Button
             android:id="@+id/saveAlbum"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="48dp"
             android:text="@string/album_save"
-            android:layout_gravity="center" />
+            android:layout_marginTop="8dp"
+            android:contentDescription="@string/save_button"
+            android:importantForAccessibility="yes"
+            android:backgroundTint="@color/save_button_color" />
 
     </LinearLayout>
 </ScrollView>
