@@ -5,7 +5,7 @@
     android:layout_height="wrap_content"
     android:orientation="horizontal"
     android:gravity="center"
-    android:padding="16dp">
+    android:padding="2dp">
 
     <!-- Selector 1: Home -->
     <TextView
@@ -16,8 +16,7 @@
         app:drawableTopCompat="@drawable/home_icon"
         android:contentDescription="@string/icon_description_home"
         android:gravity="center"
-        android:text="@string/label_home"
-        android:layout_marginTop="8dp" />
+        android:text="@string/label_home" />
 
     <!-- Selector 2: Search -->
     <TextView
@@ -27,7 +26,6 @@
         app:drawableTopCompat="@drawable/search_icon"
         android:contentDescription="@string/icon_description_search"
         android:gravity="center"
-        android:text="@string/label_search"
-        android:layout_marginTop="8dp" />
+        android:text="@string/label_search"/>
 
 </LinearLayout>
