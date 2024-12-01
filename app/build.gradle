@@ -100,4 +100,6 @@ dependencies {
     testImplementation "org.mockito.kotlin:mockito-kotlin:4.0.0"
     testImplementation "androidx.arch.core:core-testing:2.1.0"
     testImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin:2.2.0"
+
+    androidTestImplementation 'androidx.test.uiautomator:uiautomator:2.2.0'
 }
