@@ -56,6 +56,7 @@
     <string name="layout_description">Formulario para agregar una nueva pista de álbum</string>
     <string name="track_name_description">Campo para ingresar el nombre de la pista</string>
     <string name="track_duration_description">Campo para ingresar la duración de la pista</string>
+    <string name="album_release_date_hint">Ingrese fecha de lanzamiento (YYYY-MM-DD)</string>
 
     <string name="cancel_track_description">Botón para cancelar la adición de una nueva pista</string>
     <string name="save_track_description">Botón para guardar la nueva pista</string>
