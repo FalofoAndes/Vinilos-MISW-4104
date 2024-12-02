@@ -1,0 +1,60 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp"
+        android:importantForAccessibility="yes"
+        android:contentDescription="@string/layout_description"> <!-- Descripción del layout -->
+
+        <TextView
+            android:id="@+id/add_track_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="25sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="8dp"
+            android:layout_gravity="center_horizontal"
+            android:text="@string/add_track_title"
+            android:importantForAccessibility="yes"
+            android:contentDescription="@string/add_track_title_description" /> <!-- Descripción accesible -->
+
+        <EditText
+            android:id="@+id/trackName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/track_name"
+            android:importantForAccessibility="yes"
+            android:contentDescription="@string/track_name_description" /> <!-- Descripción accesible para el campo de texto -->
+
+        <EditText
+            android:id="@+id/trackDuration"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/track_duration"
+            android:importantForAccessibility="yes"
+            android:contentDescription="@string/track_duration_description" /> <!-- Descripción accesible para el campo de duración -->
+
+        <Button
+            android:id="@+id/cancelTrack"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/cancel"
+            android:layout_marginTop="8dp"
+            android:importantForAccessibility="yes"
+            android:contentDescription="@string/cancel_track_description" /> <!-- Descripción accesible del botón Cancelar -->
+
+        <Button
+            android:id="@+id/saveTrack"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/save_track"
+            android:layout_gravity="center"
+            android:importantForAccessibility="yes"
+            android:contentDescription="@string/save_track_description" /> <!-- Descripción accesible del botón Guardar -->
+
+    </LinearLayout>
+</ScrollView>

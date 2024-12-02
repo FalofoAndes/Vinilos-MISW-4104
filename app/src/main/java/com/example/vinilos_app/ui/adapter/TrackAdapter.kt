@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.vinilos_app.models.Track
 import com.example.vinyls_jetpack_application.R
@@ -26,20 +27,36 @@ class TrackAdapter(private var tracks: List<Track>) : RecyclerView.Adapter<Track
         holder.trackDuration.text = track.duration
     }
 
-    override fun getItemCount(): Int {
-        return tracks.size
-    }
-    fun updateTracks(newTracks: List<Track>) {
-        val oldSize = tracks.size
-        tracks = newTracks
-        val newSize = newTracks.size
+    override fun getItemCount(): Int = tracks.size
 
-        when {
-            newSize > oldSize -> notifyItemRangeInserted(oldSize, newSize - oldSize)
-            newSize < oldSize -> notifyItemRangeRemoved(newSize, oldSize - newSize)
-            else -> newTracks.indices.forEach { i ->
-                if (tracks[i] != newTracks[i]) notifyItemChanged(i)
-            }
+    /**
+     * Actualiza la lista de tracks usando DiffUtil para optimizar el rendimiento
+     */
+    fun updateTracks(newTracks: List<Track>) {
+        val diffCallback = TrackDiffCallback(tracks, newTracks)
+        val diffResult = DiffUtil.calculateDiff(diffCallback)
+        tracks = newTracks
+        diffResult.dispatchUpdatesTo(this)
+    }
+
+    /**
+     * Implementación de DiffUtil.Callback para calcular las diferencias entre listas
+     */
+    class TrackDiffCallback(
+        private val oldList: List<Track>,
+        private val newList: List<Track>
+    ) : DiffUtil.Callback() {
+
+        override fun getOldListSize(): Int = oldList.size
+
+        override fun getNewListSize(): Int = newList.size
+
+        override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+            return oldList[oldItemPosition].id == newList[newItemPosition].id
+        }
+
+        override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+            return oldList[oldItemPosition] == newList[newItemPosition]
         }
     }
 }

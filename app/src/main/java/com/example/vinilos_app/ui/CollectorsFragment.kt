@@ -20,7 +20,6 @@ class CollectorsFragment : Fragment(R.layout.collectors_fragment) {
 
     private lateinit var collectorsCatalogViewModel: CollectorsCatalogViewModel
     private lateinit var adapter: CollectorsAdapter
-    private val collectorsList = listOf<Collector>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,8 +28,10 @@ class CollectorsFragment : Fragment(R.layout.collectors_fragment) {
         val repository = CollectorsRepository(requireContext())
 
         // Usar ViewModelProvider para inicializar CollectorsCatalogViewModel con argumentos
-        collectorsCatalogViewModel = ViewModelProvider(this, CollectorsCatalogViewModelFactory(repository))
-            .get(CollectorsCatalogViewModel::class.java)
+        collectorsCatalogViewModel = ViewModelProvider(
+            this,
+            CollectorsCatalogViewModelFactory(repository)
+        ).get(CollectorsCatalogViewModel::class.java)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -38,7 +39,11 @@ class CollectorsFragment : Fragment(R.layout.collectors_fragment) {
 
         // Setup RecyclerView and Adapter
         val recyclerView = view.findViewById<RecyclerView>(R.id.recycler_view_collectors)
-        adapter = CollectorsAdapter(collectorsList)
+
+        // Configura el adaptador con el listener para manejar clics
+        adapter = CollectorsAdapter(emptyList()) { collector ->
+            navigateToCollectorDetail(collector.collectorId)
+        }
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
@@ -54,7 +59,11 @@ class CollectorsFragment : Fragment(R.layout.collectors_fragment) {
 
         // Load collectors catalog
         collectorsCatalogViewModel.loadCollectorsCatalog()
+    }
 
+    private fun navigateToCollectorDetail(collectorId: Int) {
+        val action = CollectorsFragmentDirections.actionCollectorsFragmentToCollectorDetailFragment(collectorId)
+        findNavController().navigate(action)
     }
 }
 

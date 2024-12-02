@@ -1,16 +1,19 @@
 package com.example.vinilos_app.network
 
 import android.content.Context
+import android.util.Log
 import com.android.volley.Request
 import com.android.volley.RequestQueue
 import com.android.volley.Response
 import com.android.volley.VolleyError
+import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import org.json.JSONArray
 import org.json.JSONObject
 import com.example.vinilos_app.models.Album
 import com.example.vinilos_app.models.Collector
+import com.example.vinilos_app.models.CollectorDetail
 import com.example.vinilos_app.models.Comment
 import com.example.vinilos_app.models.Performer
 import com.example.vinilos_app.models.Track
@@ -81,6 +84,10 @@ class NetworkServiceAdapter private constructor(context: Context) {
 
     private fun getRequest(path: String, responseListener: Response.Listener<String>, errorListener: Response.ErrorListener): StringRequest {
         return StringRequest(Request.Method.GET, BASE_URL + path, responseListener, errorListener)
+    }
+
+    fun postRequest(path: String, body: JSONObject,  responseListener: Response.Listener<JSONObject>, errorListener: Response.ErrorListener ):JsonObjectRequest{
+        return  JsonObjectRequest(Request.Method.POST, BASE_URL + path, body, responseListener, errorListener)
     }
 
     private fun getAlbum(jsonObject: JSONObject): Album {
@@ -239,5 +246,179 @@ class NetworkServiceAdapter private constructor(context: Context) {
         ))
     }
 
+    fun postAlbums(
+        album: Album,
+        onComplete: (Album) -> Unit,
+        onError: (error: VolleyError) -> Unit
+    ) {
+        EspressoIdlingResource.increment()
 
+        val postParams = JSONObject().apply {
+            put("name", album.name)
+            put("cover", album.cover)
+            put("releaseDate", album.releaseDate)
+            put("description", album.description)
+            put("genre", album.genre)
+            put("recordLabel", album.recordLabel)
+        }
+
+        requestQueue.add(
+            postRequest(
+                "albums",
+                postParams,
+                { response ->
+                    try {
+                        val returnedAlbum = Album(
+                            albumId = response.getInt("id"),
+                            name = response.getString("name"),
+                            cover = response.getString("cover"),
+                            releaseDate = response.getString("releaseDate"),
+                            description = response.getString("description"),
+                            genre = response.getString("genre"),
+                            recordLabel = response.getString("recordLabel"),
+                            emptyList(),
+                            emptyList(),
+                            emptyList()
+                        )
+                        onComplete(returnedAlbum)
+                    } catch (e: Exception) {
+                        onError(VolleyError("Error parsing response: ${e.message}"))
+                    } finally {
+                        EspressoIdlingResource.decrement()
+                    }
+                },
+                { error ->
+                    onError(error)
+                    EspressoIdlingResource.decrement()
+                }
+            )
+        )
+    }
+
+    suspend fun getCollectorDetail(collectorId: Int): CollectorDetail = withContext(Dispatchers.IO) {
+        suspendCoroutine { cont ->
+            EspressoIdlingResource.increment()
+
+            requestQueue.add(getRequest("collectors/$collectorId",
+                { response ->
+                    try {
+                        val jsonObject = JSONObject(response)
+
+                        // Parsear el detalle del collector
+                        val collectorDetail = CollectorDetail(
+                            collectorId = jsonObject.getInt("id"),
+                            name = jsonObject.getString("name"),
+                            telephone = jsonObject.optString("telephone", ""),
+                            email = jsonObject.optString("email", ""),
+                            comments = jsonObject.getJSONArray("comments").let { commentsArray ->
+                                List(commentsArray.length()) { i ->
+                                    val commentObj = commentsArray.getJSONObject(i)
+                                    Comment(
+                                        id = commentObj.getInt("id"),
+                                        description = commentObj.getString("description"),
+                                        rating = commentObj.getInt("rating")
+                                    )
+                                }
+                            },
+                            favoritePerformers = jsonObject.getJSONArray("favoritePerformers").let { performersArray ->
+                                List(performersArray.length()) { i ->
+                                    val performerObj = performersArray.getJSONObject(i)
+                                    Performer(
+                                        id = performerObj.getInt("id"),
+                                        name = performerObj.getString("name"),
+                                        image = performerObj.optString("image", ""),
+                                        description = performerObj.optString("description", ""),
+                                        birthDate = performerObj.optString("birthDate", ""),
+                                        creationDate = getNullable(jsonObject, "creationDate")
+                                    )
+                                }
+                            },
+
+                        )
+
+                        cont.resume(collectorDetail) // Retorna el detalle del coleccionista
+                    } catch (e: Exception) {
+                        cont.resumeWithException(e) // Manejo de excepción
+                    } finally {
+                        EspressoIdlingResource.decrement()
+                    }
+                },
+                { error ->
+                    cont.resumeWithException(error) // Manejo de error de red
+                    EspressoIdlingResource.decrement()
+                }
+            ))
+        }
+    }
+
+    suspend fun getTracks(albumId: Int): List<Track> = withContext(Dispatchers.IO) {
+        val response = suspendCoroutine<String> { continuation ->
+            requestQueue.add(getRequest("albums/$albumId/tracks",
+                { response ->
+                    continuation.resume(response)
+                },
+                { error ->
+                    continuation.resumeWithException(error)
+                }
+            ))
+        }
+
+        val tracksArray = JSONArray(response)
+        val tracks = mutableListOf<Track>()
+        for (i in 0 until tracksArray.length()) {
+            val trackObj = tracksArray.getJSONObject(i)
+            tracks.add(
+                Track(
+                    id = trackObj.getInt("id"),
+                    name = trackObj.getString("name"),
+                    duration = trackObj.getString("duration")
+                )
+            )
+        }
+        tracks
+    }
+
+    suspend fun addTrack(
+        albumId: Int,
+        track: Track
+    ): Track = withContext(Dispatchers.IO) {
+        try {
+            // Log inicial para depurar el ID del álbum y los parámetros enviados
+            Log.d("NetworkServiceAdapter", "Adding track to albumId: $albumId")
+            Log.d("NetworkServiceAdapter", "Track details: name=${track.name}, duration=${track.duration}")
+
+            // Crear parámetros del POST
+            val postParams = JSONObject().apply {
+                put("name", track.name)
+                put("duration", track.duration)
+            }
+
+            // Realizar la solicitud y obtener la respuesta
+            val response = suspendCoroutine<JSONObject> { continuation ->
+                requestQueue.add(postRequest("albums/$albumId/tracks", postParams,
+                    { jsonResponse ->
+                        Log.d("NetworkServiceAdapter", "Track added successfully: $jsonResponse")
+                        continuation.resume(jsonResponse)
+                    },
+                    { error ->
+                        // Log detallado del error
+                        Log.e("NetworkServiceAdapter", "Error adding track: ${error.message}")
+                        continuation.resumeWithException(error)
+                    }
+                ))
+            }
+
+            // Crear y retornar el objeto Track a partir de la respuesta
+            Track(
+                id = response.getInt("id"),
+                name = response.getString("name"),
+                duration = response.getString("duration")
+            )
+
+        } catch (e: Exception) {
+            // Captura y log de errores generales
+            Log.e("NetworkServiceAdapter", "Exception in addTrack: ${e.message}", e)
+            throw e // Re-lanzar la excepción para que sea manejada por el ViewModel o la UI
+        }
+    }
 }
